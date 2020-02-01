@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void diaryClick(View view){
-        /*Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
+        startActivity(intent);
     }
 }
