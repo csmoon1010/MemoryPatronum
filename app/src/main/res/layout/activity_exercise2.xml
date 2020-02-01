@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="운동하기"
+        android:textSize = "40dp"
+        android:gravity="center"
+        android:textColor = "#000000"
+        android:fontFamily="@font/ridibatang"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/practiceB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/ridibatang"
+            android:text="연습하기"
+            android:textSize="30dp"
+            android:onClick="onPracticeClick"/>
+
+        <Button
+            android:id="@+id/testB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/ridibatang"
+            android:text="시험보기"
+            android:textSize="30dp"
+            android:onClick="onTestClick"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/voice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="음성으로 동작가능합니다"
+        android:textSize = "30dp"
+        android:textColor = "#000000"
+        android:fontFamily="@font/ridibatang"
+        android:layout_weight="2" />
+
+    <ImageView
+        android:id="@+id/microphone"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/stopmicrophone" />
+
+
+</LinearLayout>
