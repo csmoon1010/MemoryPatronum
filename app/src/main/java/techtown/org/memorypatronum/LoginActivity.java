@@ -27,7 +27,7 @@ import techtown.org.memorypatronum.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static String IP_ADDRESS = "192.168.219.177";
+    private static String IP_ADDRESS = "192.168.219.183";
     private static String TAG = "phptest";
 
 

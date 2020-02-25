@@ -8,7 +8,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,14 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import java.util.Calendar;
 
 public class DWriteActivity extends AppCompatActivity {
-    CalendarView calendarView;
-    String selected;
+    MaterialCalendarView writeCalendar;
     TextView dateText;
     Calendar calendar;
     Calendar calendar2;
+    String result;
     ImageButton voiceButton;
 
     Intent speechIntent;
@@ -38,18 +42,40 @@ public class DWriteActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_write1);
-        calendarView = (CalendarView)findViewById(R.id.calendarView);
+        writeCalendar = (MaterialCalendarView)findViewById(R.id.writeCalendar);
         dateText = (TextView)findViewById(R.id.dateText);
         voiceButton = (ImageButton)findViewById(R.id.microphone);
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
         calendar2.add(calendar2.MONTH, -1);
-        long endOfDate = calendar.getTimeInMillis();
-        long startOfDate = calendar2.getTimeInMillis();
-        calendarView.setMaxDate(endOfDate);
-        calendarView.setMinDate(startOfDate);
+        /*long endOfDate = calendar.getTimeInMillis();
+        long startOfDate = calendar2.getTimeInMillis();*/
+        writeCalendar.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setMaximumDate(CalendarDay.from(calendar))
+                .setMinimumDate(CalendarDay.from(calendar2))
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
+        //calendarView.setMinDate(startOfDate);
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        writeCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay date, boolean selected) {
+                int year = date.getYear();
+                int month = date.getMonth();
+                int dayOfMonth = date.getDay();
+                calendar.set(year, month, dayOfMonth);
+                int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
+                String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
+                        "목요일", "금요일", "토요일"};
+                String dayOfWeek = dayString[dayNum-1];
+                result = String.format("%d년 %d월 %d일 ", year, (month + 1), dayOfMonth);
+                dateText.setText(result);
+                dateText.append(dayOfWeek);
+            }
+        });
+
+        /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
@@ -61,7 +87,7 @@ public class DWriteActivity extends AppCompatActivity {
                 dateText.setText(selected);
                 dateText.append(dayOfWeek);
             }
-        });
+        });*/
 
         speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
@@ -85,7 +111,7 @@ public class DWriteActivity extends AppCompatActivity {
             Log.i("dwrite", "message" + s);
             //s = s.replaceAll("[^0-9]", " ");
             Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-            selected = s;
+            result = s;
             dateText.setText(s);
         }
     }
