@@ -22,13 +22,15 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.Calendar;
+import java.sql.Date;
 
 public class DWriteActivity extends AppCompatActivity {
     MaterialCalendarView writeCalendar;
     TextView dateText;
     Calendar calendar;
     Calendar calendar2;
-    String result;
+    String selectedDate;
+    Date resultDate;
     ImageButton voiceButton;
 
     Intent speechIntent;
@@ -48,15 +50,12 @@ public class DWriteActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
         calendar2.add(calendar2.MONTH, -1);
-        /*long endOfDate = calendar.getTimeInMillis();
-        long startOfDate = calendar2.getTimeInMillis();*/
         writeCalendar.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setMaximumDate(CalendarDay.from(calendar))
                 .setMinimumDate(CalendarDay.from(calendar2))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
-        //calendarView.setMinDate(startOfDate);
 
         writeCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -69,25 +68,12 @@ public class DWriteActivity extends AppCompatActivity {
                 String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
                         "목요일", "금요일", "토요일"};
                 String dayOfWeek = dayString[dayNum-1];
-                result = String.format("%d년 %d월 %d일 ", year, (month + 1), dayOfMonth);
-                dateText.setText(result);
+                selectedDate = String.format("%d년 %d월 %d일 ", year, (month + 1), dayOfMonth);
+                dateText.setText(selectedDate);
                 dateText.append(dayOfWeek);
+                resultDate = new java.sql.Date(date.getDate().getTime());
             }
         });
-
-        /*calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
-                String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
-                        "목요일", "금요일", "토요일"};
-                String dayOfWeek = dayString[dayNum-1];
-                selected = String.format("%d년 %d월 %d일 ", year, (month + 1), dayOfMonth);
-                dateText.setText(selected);
-                dateText.append(dayOfWeek);
-            }
-        });*/
 
         speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
@@ -111,15 +97,22 @@ public class DWriteActivity extends AppCompatActivity {
             Log.i("dwrite", "message" + s);
             //s = s.replaceAll("[^0-9]", " ");
             Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-            result = s;
+            selectedDate = s;
             dateText.setText(s);
         }
     }
 
     public void onNextClick1(View view){
-        Intent intent = new Intent(getApplicationContext(), DWriteActivity2.class);
-        startActivity(intent);
-        finish();
+        if(dateText.getText().equals("○○○○년 ○○월 ○○일 ○요일")){
+            Toast.makeText(getApplicationContext(), "달력에서 날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent = new Intent(getApplicationContext(), DWriteActivity2.class);
+            intent.putExtra("CALENDAR", resultDate.toString());
+            Toast.makeText(getApplicationContext(), resultDate.toString(), Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void onVoiceClick(View view){

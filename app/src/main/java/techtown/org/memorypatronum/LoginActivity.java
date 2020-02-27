@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEditTextPassword;
     private TextView mTextViewResult;
 
+    public String loginID;
 
     @Override
     @SuppressWarnings("unused")
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 mEditTextPassword.setText("");
             }
             else{
+                loginID = mEditTextID.getText().toString();
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
