@@ -38,7 +38,9 @@ public class DWriteActivity2 extends AppCompatActivity {
     public String calendarText;
     Date calendarDate;
 
-    LoginActivity loginActivity;
+    public String diaryNum;
+    Intent intent;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,7 @@ public class DWriteActivity2 extends AppCompatActivity {
         calendarText = intent.getStringExtra("CALENDAR");
         calendarDate = java.sql.Date.valueOf(calendarText);
 
-        loginActivity = new LoginActivity();
+
     }
 
     public void onNextClick2(View view){
@@ -89,20 +91,11 @@ public class DWriteActivity2 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //이제까지 쓴 것 DB에 저장(answers 배열)
-                        String id = loginActivity.loginID;
-                        String did = "1";
-                        String calendar = calendarText;
-                        String what = answers[0];
-                        String who = answers[1];
-                        String location = answers[2];
-                        String hour = answers[3];
-                        String clothes = answers[4];
-                        String weather = answers[5];
-                        String etc = answers[6];
+                        MyApplication myApp = (MyApplication)getApplication();
+                        String id = myApp.getLoginID();
 
-                        DiaryInsertData task = new DiaryInsertData();
-                        task.execute("http://" + IP_ADDRESS + "/diary_insert.php", id, did, calendar,
-                                what, who, location, hour, clothes, weather, etc);
+                        getDiaryNum task1 = new getDiaryNum();
+                        task1.execute("http://" + IP_ADDRESS + "/getMembers.php", id);
 
                         //Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -174,6 +167,105 @@ public class DWriteActivity2 extends AppCompatActivity {
             String postParameters = "&id=" + id + "&did=" + did + "&calendar=" + calendar +
                     "&what=" + what + "&who=" + who + "&location=" + location + "&hour=" + hour +
                     "&clothes=" + clothes + "&weather=" + weather + "&etc=" + etc;
+
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                Log.d(TAG, "InsertData: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
+        }
+    }
+
+    class getDiaryNum extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        @SuppressWarnings("unused")
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+
+        @Override
+        @SuppressWarnings("unused")
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            diaryNum = String.valueOf(Integer.parseInt(result)+1);
+            MyApplication myApp = (MyApplication)getApplication();
+            String id = myApp.getLoginID();
+            String did = diaryNum;
+            String calendar = calendarText;
+            String what = answers[0];
+            String who = answers[1];
+            String location = answers[2];
+            String hour = answers[3];
+            String clothes = answers[4];
+            String weather = answers[5];
+            String etc = answers[6];
+            DiaryInsertData task2 = new DiaryInsertData();
+            task2.execute("http://" + IP_ADDRESS + "/diary_insert.php", id, did, calendar,
+                    what, who, location, hour, clothes, weather, etc);
+            Log.d(TAG, "POST response  - " + result);
+        }
+
+
+        @Override
+        @SuppressWarnings("unused")
+        protected String doInBackground(String... params) {
+
+            String id = (String)params[1];
+            String serverURL = (String)params[0];
+            String postParameters = "&id=" + id;
 
 
             try {
