@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.sql.Date;
 import java.util.HashSet;
@@ -42,8 +43,10 @@ public class DMemoryActivity extends AppCompatActivity {
     HashSet<CalendarDay> dates;
     String[] calendars;
     String[] doWhat;
+    String[] didList;
 
-    CalendarDay calendarDay;
+    String calendarDate;
+    String dayOfWeek;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,13 +66,23 @@ public class DMemoryActivity extends AppCompatActivity {
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull final CalendarDay date, boolean selected) {
                 MyApplication myApp = (MyApplication)getApplication();
                 String id = myApp.getLoginID();
-                calendarDay = date;
 
                 Date selectedDate = new Date(date.getDate().getTime());
-                String calendar = selectedDate.toString();
-                Toast.makeText(getApplicationContext(), calendar, Toast.LENGTH_SHORT).show();
+                calendarDate = selectedDate.toString();
+
+                //요일 계산
+                int year = date.getYear();
+                int month = date.getMonth();
+                int dayOfMonth = date.getDay();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
+                String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
+                        "목요일", "금요일", "토요일"};
+                dayOfWeek = dayString[dayNum-1];
+
                 getWhat task2 = new getWhat();
-                task2.execute("http://" + IP_ADDRESS + "/getWhat.php", id, calendar);
+                task2.execute("http://" + IP_ADDRESS + "/getWhat.php", id, calendarDate);
             }
         });
     }
@@ -221,23 +234,36 @@ public class DMemoryActivity extends AppCompatActivity {
             super.onPostExecute(result);
             progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
-            doWhat = result.split("</br>"); //</br>을 기준으로 자르는 방식
+            if(result != ""){
+                String[] temp = result.split("</br>");
+                doWhat = new String[temp.length];
+                didList = new String[temp.length];
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(DMemoryActivity.this);
-            builder.setTitle("일기목록");
-            // DB에서 일기 제목(무엇) 받아오고 다음 액티비티로 date 보냄
-            builder.setItems(doWhat, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(getApplicationContext(), DMemoryActivity2.class);
-                    intent.putExtra("YEAR", calendarDay.getYear());
-                    intent.putExtra("MONTH", calendarDay.getMonth());
-                    intent.putExtra("DAY", calendarDay.getDay());
-                    startActivity(intent);
+                for(int i = 0; i < temp.length; i++){
+                    String[] temp2 = temp[i].split("<did>");
+                    doWhat[i] = temp2[0];
+                    didList[i] = temp2[1];
                 }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DMemoryActivity.this);
+                builder.setTitle("일기목록");
+                // DB에서 일기 제목(무엇) 받아오고 다음 액티비티로 date 보냄
+                builder.setItems(doWhat, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(getApplicationContext(), DMemoryActivity2.class);
+                        intent.putExtra("CalendarDate", calendarDate);
+                        intent.putExtra("dayOfWeek", dayOfWeek);
+                        intent.putExtra("did", didList[i]);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "해당 날짜에 일기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

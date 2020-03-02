@@ -1,8 +1,12 @@
 package techtown.org.memorypatronum;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class DMemoryActivity2 extends AppCompatActivity {
     ListView list;
@@ -27,6 +38,10 @@ public class DMemoryActivity2 extends AppCompatActivity {
             "6. 그 일에 대해 기록하고 싶은 것들을\n더 적어주세요."
     };
     String[] contents = new String[8];
+
+    private static String IP_ADDRESS = "192.168.219.183";
+    private static String TAG = "phptest";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +52,13 @@ public class DMemoryActivity2 extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        contents[0] = String.valueOf(intent.getIntExtra("YEAR", 0));
-        contents[1] = String.valueOf(intent.getIntExtra("MONTH", 0));
-        contents[2] = String.valueOf(intent.getIntExtra("DAY", 0));
+        contents[0] = intent.getStringExtra("CalendarDate") + " / " + intent.getStringExtra("dayOfWeek");
 
-        DiaryList adapter = new DiaryList(DMemoryActivity2.this);
-        list =  (ListView)findViewById(R.id.diaryList);
-        list.setAdapter(adapter);
+        MyApplication myApp = (MyApplication)getApplication();
+        String id = myApp.getLoginID();
+        getDiary task = new getDiary();
+        String did = intent.getStringExtra("did");
+        task.execute("http://" + IP_ADDRESS + "/getDiary.php", id, did);
     }
 
     public class DiaryList extends ArrayAdapter<String> {
@@ -64,6 +79,101 @@ public class DMemoryActivity2 extends AppCompatActivity {
             title.setText(titles[position]);
             content.setText(contents[position]);
             return rowView;
+        }
+    }
+
+    class getDiary extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        @SuppressWarnings("unused")
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(DMemoryActivity2.this,
+                    "일기를 불러오는 중입니다.", null, true, true);
+        }
+
+        @Override
+        @SuppressWarnings("unused")
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            Log.d(TAG, "POST response  - " + result);
+
+            String[] diary = result.split("</br>");
+            for(int i = 0; i < diary.length && (i+1) < contents.length; i++){
+                contents[i+1] = diary[i];
+            }
+            DiaryList adapter = new DiaryList(DMemoryActivity2.this);
+            list =  (ListView)findViewById(R.id.diaryList);
+            list.setAdapter(adapter);
+        }
+
+        @Override
+        @SuppressWarnings("unused")
+        protected String doInBackground(String... params) {
+            String id = (String)params[1];
+            String did = (String)params[2];
+
+            String serverURL = (String)params[0];
+            String postParameters = "&id=" + id + "&did=" + did;
+
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "POST response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString();
+
+
+            } catch (Exception e) {
+
+                Log.d(TAG, "getCalendar: Error ", e);
+
+                return new String("Error: " + e.getMessage());
+            }
+
         }
     }
 }
