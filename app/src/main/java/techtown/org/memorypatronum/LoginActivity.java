@@ -27,7 +27,7 @@ import techtown.org.memorypatronum.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static String IP_ADDRESS = "192.168.219.177";
+    private static String IP_ADDRESS = "192.168.219.183";
     private static String TAG = "phptest";
 
 
@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
-
         Button buttonInsert = (Button)findViewById(R.id.button_main_insert);
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                 String id = mEditTextID.getText().toString();
                 String password = mEditTextPassword.getText().toString();
 
+                MyApplication myApp = (MyApplication)getApplication();
+                myApp.setLoginID(id);
                 InsertData task = new InsertData();
                 task.execute("http://" + IP_ADDRESS + "/new.php", id, password);
 
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 mEditTextPassword.setText("");
             }
             else{
+                //로그인 id 설정
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

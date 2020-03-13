@@ -19,10 +19,13 @@
         android:layout_weight="2"/>
 
 
-    <CalendarView
-        android:id="@+id/calendarView"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/writeCalendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:mcv_selectionColor="@color/diarySelected"
+        app:mcv_showOtherDates="all"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"/>
 
     <TextView
