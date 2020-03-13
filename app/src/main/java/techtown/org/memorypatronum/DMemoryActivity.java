@@ -25,6 +25,7 @@ public class DMemoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //for merge
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_memory1);
         memoryCalendar = (MaterialCalendarView) findViewById(R.id.memoryCalendar);
