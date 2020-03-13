@@ -49,8 +49,7 @@ public class DMemoryActivity extends AppCompatActivity {
     String dayOfWeek;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //for merge
+    protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_memory1);
         memoryCalendar = (MaterialCalendarView) findViewById(R.id.memoryCalendar);
