@@ -26,11 +26,16 @@ import java.net.URL;
 import java.sql.Date;
 
 public class DWriteActivity2 extends AppCompatActivity {
-    public String[] questions;
-    String[] answers;
-    Integer qNum;
-    TextView questionText;
-    EditText answerText;
+    String titleString;
+    String contentsString;
+    TextView titleText;
+    EditText contentsText;
+    TextView dateText;
+    //public String[] questions;
+    //String[] answers;
+    //Integer qNum;
+    //TextView questionText;
+    //EditText answerText;
 
     private static String IP_ADDRESS = "192.168.219.183";
     private static String TAG = "phptest";
@@ -44,8 +49,14 @@ public class DWriteActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_write2);
-        qNum = 0;
+        setContentView(R.layout.diary_write3);
+        titleText = (TextView)findViewById(R.id.diaryTitle);
+        contentsText = (EditText)findViewById((R.id.diaryContents));
+        dateText = (TextView)findViewById(R.id.diaryDate);
+        titleString = String.valueOf(titleText.getText());
+        contentsString = String.valueOf(contentsText.getText());
+
+        /*qNum = 0;
         questionText = (TextView)findViewById(R.id.questionText);
         answerText = (EditText) findViewById(R.id.answerText);
 
@@ -62,7 +73,7 @@ public class DWriteActivity2 extends AppCompatActivity {
         answers = new String[7];
         for(int i = 0; i < 7; i++){
             answers[i] = "";
-        }
+        }*/
 
         Intent intent = getIntent();
         calendarText = intent.getStringExtra("CALENDAR");
@@ -72,10 +83,39 @@ public class DWriteActivity2 extends AppCompatActivity {
     }
 
     public void onNextClick2(View view){
-        answers[qNum] = String.valueOf(answerText.getText());
-        Log.d("qNUM", qNum+"");
-        Log.d("answer", answers[qNum]);
-        if(answers[qNum].equals("")){ //내용 없음을 표현할 수 있는 방법 찾아보기
+        //answers[qNum] = String.valueOf(answerText.getText());
+        //Log.d("qNUM", qNum+"");
+        //Log.d("answer", answers[qNum]);
+        if(titleString.equals(""))
+            Toast.makeText(getApplicationContext(), "제목을 작성해주세요.", Toast.LENGTH_SHORT).show();
+        if(contentsString.equals(""))
+            Toast.makeText(getApplicationContext(), "내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("저장하시겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //이제까지 쓴 것 DB에 저장(answers 배열)
+                    MyApplication myApp = (MyApplication)getApplication();
+                    String id = myApp.getLoginID();
+
+                    getDiaryNum task1 = new getDiaryNum();
+                    task1.execute("http://" + IP_ADDRESS + "/getMembers.php", id);
+
+                    //Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(getApplicationContext(), "취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        /*if(answers[qNum].equals("")){ //내용 없음을 표현할 수 있는 방법 찾아보기
             Toast.makeText(getApplicationContext(), "내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -109,18 +149,34 @@ public class DWriteActivity2 extends AppCompatActivity {
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
             }
-        }
+        }*/
     }
 
-    public void onPreviousClick(View view){
-        if(qNum > 0){
+    public void onCancelClick(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("작성을 취소하시겠습니까?\n취소하면 작성했던 모든 내용이 사라집니다.");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DWriteActivity2.this.finish();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        /*if(qNum > 0){
             qNum--;
             questionText.setText(questions[qNum]);
             answerText.setText(answers[qNum]);
         }
         else{
             finish();
-        }
+        }*/
     }
 
     class DiaryInsertData extends AsyncTask<String, Void, String> {
@@ -155,18 +211,22 @@ public class DWriteActivity2 extends AppCompatActivity {
             String id = (String)params[1];
             String did = (String)params[2];
             String calendar = (String)params[3];
-            String what = (String)params[4];
+            String title = (String)params[4];
+            String contents = (String)params[5];
+            /*String what = (String)params[4];
             String who = (String)params[5];
             String location = (String)params[6];
             String hour = (String)params[7];
             String clothes= (String)params[8];
             String weather = (String)params[9];
-            String etc = (String)params[10];
+            String etc = (String)params[10];*/
 
             String serverURL = (String)params[0];
             String postParameters = "&id=" + id + "&did=" + did + "&calendar=" + calendar +
+                    "&title" + title + "&contents" + contents;
+            /*String postParameters = "&id=" + id + "&did=" + did + "&calendar=" + calendar +
                     "&what=" + what + "&who=" + who + "&location=" + location + "&hour=" + hour +
-                    "&clothes=" + clothes + "&weather=" + weather + "&etc=" + etc;
+                    "&clothes=" + clothes + "&weather=" + weather + "&etc=" + etc;*/
 
 
             try {
@@ -245,16 +305,17 @@ public class DWriteActivity2 extends AppCompatActivity {
             String id = myApp.getLoginID();
             String did = diaryNum;
             String calendar = calendarText;
-            String what = answers[0];
+            String title = titleString;
+            String contents = contentsString;
+            /*String what = answers[0];
             String who = answers[1];
             String location = answers[2];
             String hour = answers[3];
             String clothes = answers[4];
             String weather = answers[5];
-            String etc = answers[6];
+            String etc = answers[6];*/
             DiaryInsertData task2 = new DiaryInsertData();
-            task2.execute("http://" + IP_ADDRESS + "/diary_insert.php", id, did, calendar,
-                    what, who, location, hour, clothes, weather, etc);
+            task2.execute("http://" + IP_ADDRESS + "/diary_insert.php", id, did, calendar, title, contents);
             Log.d(TAG, "POST response  - " + result);
         }
 
