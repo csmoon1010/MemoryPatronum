@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:id="@+id/diaryText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/ridibatang"
+            android:text="제목"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/diaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:fontFamily="@font/ridibatang"
+            android:textColor="#000000"
+            android:layout_marginRight = "15dp"
+            android:textSize="25dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/diaryDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:fontFamily="@font/ridibatang"
+        android:text="○○○○년 ○○월 ○○일 ○요일"
+        android:textColor="#000000"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/diaryContents"
+        android:layout_margin = "20dp"
+        android:padding = "10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity = "top"
+        android:textSize = "20dp"
+        android:fontFamily="@font/ridibatang"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:background="@drawable/editdesign" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소"
+            android:textSize="15dp"
+            android:fontFamily="@font/ridibatang"
+            android:layout_margin="10dp" />
+
+        <ImageButton
+            android:id="@+id/microphone"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="4"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/stopmicrophone" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="수정 완료"
+            android:textSize="15dp"
+            android:fontFamily="@font/ridibatang"
+            android:layout_margin="10dp" />
+
+    </LinearLayout>
+</LinearLayout>

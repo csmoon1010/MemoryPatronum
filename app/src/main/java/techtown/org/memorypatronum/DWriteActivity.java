@@ -108,8 +108,8 @@ public class DWriteActivity extends AppCompatActivity {
         }
         else{
             Intent intent = new Intent(getApplicationContext(), DWriteActivity2.class);
+            intent.putExtra("showDate", dateText.getText().toString());
             intent.putExtra("CALENDAR", resultDate.toString());
-            Toast.makeText(getApplicationContext(), resultDate.toString(), Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         }

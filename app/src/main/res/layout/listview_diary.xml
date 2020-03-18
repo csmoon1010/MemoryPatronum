@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/memoryQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/contentText"
+        android:id="@+id/memoryAnswer"
         android:layout_margin = "10dp"
         android:padding = "10dp"
         android:layout_width="match_parent"

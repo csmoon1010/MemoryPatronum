@@ -25,8 +25,7 @@ import techtown.org.memorypatronum.R;
 
 
 public class RegistrationActivity extends AppCompatActivity {
-
-    private static String IP_ADDRESS = "192.168.219.183";
+    private static String IP_ADDRESS;
     private static String TAG = "phptest";
 
     private EditText mEditTextName;
@@ -41,6 +40,9 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        MyApplication myApp = (MyApplication)getApplication();
+        IP_ADDRESS = myApp.getipAddress();
 
         mEditTextName = (EditText)findViewById(R.id.editText_main_name);
         mEditTextID = (EditText)findViewById(R.id.editText_main_id);
