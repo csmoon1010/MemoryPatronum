@@ -15,15 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
 
 public class DWriteActivity2 extends AppCompatActivity {
     String titleString;
@@ -44,7 +41,7 @@ public class DWriteActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_write3);
+        setContentView(R.layout.diary_write2);
 
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();

@@ -10,7 +10,7 @@
         >
 
         <TextView
-            android:id="@+id/memoryText1"
+            android:id="@+id/diaryText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -21,8 +21,8 @@
             android:textSize="25dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/memoryTitle"
+        <EditText
+            android:id="@+id/editTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
@@ -34,7 +34,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/memoryDate"
+        android:id="@+id/editDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
@@ -44,8 +44,8 @@
         android:textColor="#000000"
         android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/memoryContents"
+    <EditText
+        android:id="@+id/editContents"
         android:layout_margin = "20dp"
         android:padding = "10dp"
         android:layout_width="match_parent"
@@ -64,36 +64,37 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/editCancelB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="뒤로 가기"
+            android:text="취소"
             android:textSize="15dp"
             android:fontFamily="@font/ridibatang"
             android:layout_margin="10dp"
-            android:onClick = "onPreviousClick"/>
+            android:onClick = "onEditCancelClick"/>
+
+        <ImageButton
+            android:id="@+id/microphone"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="4"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/stopmicrophone" />
 
         <Button
-            android:id="@+id/editButton"
+            android:id="@+id/editCompleteB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="수정"
-            android:textSize="15dp"
-            android:fontFamily="@font/ridibatang"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="삭제"
+            android:text="수정 완료"
             android:textSize="15dp"
             android:fontFamily="@font/ridibatang"
             android:layout_margin="10dp"
-            android:onClick="onDeleteClick"/>
+            android:onClick = "onEditCompleteClick"/>
 
     </LinearLayout>
 </LinearLayout>

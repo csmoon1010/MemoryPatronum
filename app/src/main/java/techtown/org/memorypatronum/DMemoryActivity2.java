@@ -1,21 +1,15 @@
 package techtown.org.memorypatronum;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,54 +21,42 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+//저장된 일기 창
 public class DMemoryActivity2 extends AppCompatActivity {
-    /*ListView list;
-    String[] titles = {
-            "제목",
-            "날짜/요일",
-            "내용",
-            "1. 누구와 함께 했나요?",
-            "2. 어디서 했나요?",
-            "3. 몇 시에 했나요?",
-            "4. 어떤 옷을 입었나요?",
-            "5. 날씨는 어땠나요?",
-            "6. 그 일에 대해 기록하고 싶은 것들을\n더 적어주세요."
-    };
-    String[] contents = new String[8];
-    String[] contents = new String[3];*/
     String dateString;
     String id;
     String did;
     TextView titleText;
     TextView contentsText;
     TextView dateText;
-    private static String IP_ADDRESS = "192.168.219.183";
+    private static String IP_ADDRESS;
     private static String TAG = "phptest";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_memory3);
+        setContentView(R.layout.diary_memory2);
+
+        MyApplication myApp = (MyApplication)getApplication();
+        IP_ADDRESS = myApp.getipAddress();
+
         titleText = (TextView)findViewById(R.id.memoryTitle);
         dateText = (TextView)findViewById(R.id.memoryDate);
         contentsText = (TextView)findViewById(R.id.memoryContents);
-        /*for(int i = 0; i < 8; i++){
-            contents[i] = "";
-        }*/
 
         Intent intent = getIntent();
-        dateString = intent.getStringExtra("CalendarDate") + " / " + intent.getStringExtra("dayOfWeek");
+        dateString = intent.getStringExtra("showDate");
         dateText.setText(dateString);
-        //contents[1] = intent.getStringExtra("CalendarDate") + " / " + intent.getStringExtra("dayOfWeek");
 
-        MyApplication myApp = (MyApplication)getApplication();
         id = myApp.getLoginID();
         did = intent.getStringExtra("did");
         getDiary task = new getDiary();
         task.execute("http://" + IP_ADDRESS + "/getDiary.php", id, did);
     }
     public void onPreviousClick(View view){
+        Intent i = new Intent(getApplicationContext(), DMemoryActivity.class);
         DMemoryActivity2.this.finish();
+        startActivity(i);
     }
     public void onEditClick(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -82,7 +64,12 @@ public class DMemoryActivity2 extends AppCompatActivity {
         builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //수정 창
+                Intent editIntent = new Intent(getApplicationContext(), DMemoryActivity3.class);
+                editIntent.putExtra("id", id);
+                editIntent.putExtra("did", did);
+                editIntent.putExtra("date", dateString);
+                DMemoryActivity2.this.finish();
+                startActivity(editIntent);
             }
         });
         builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -101,7 +88,7 @@ public class DMemoryActivity2 extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 deleteDiary deleteTask = new deleteDiary();
-                deleteTask.execute("http://" + IP_ADDRESS + "/getDiary.php", id, did);
+                deleteTask.execute("http://" + IP_ADDRESS + "/deleteDiary.php", id, did);
             }
         });
         builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -113,26 +100,6 @@ public class DMemoryActivity2 extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-    /*public class DiaryList extends ArrayAdapter<String> {
-        private final Activity context;
-        public DiaryList(Activity context){
-            super(context, R.layout.listview_diary, titles);
-            this.context = context;
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.listview_diary, null, true);
-            TextView title = (TextView)rowView.findViewById(R.id.memoryQuestion);
-            TextView content = (TextView)rowView.findViewById(R.id.memoryAnswer);
-
-            title.setText(titles[position]);
-            content.setText(contents[position]);
-            return rowView;
-        }
-    }*/
 
     class getDiary extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -156,12 +123,6 @@ public class DMemoryActivity2 extends AppCompatActivity {
             String[] diary = result.split("</br>");
             titleText.setText(diary[0]);
             contentsText.setText(diary[1]);
-            /*for(int i = 0; i < diary.length && (i+1) < contents.length; i++){
-                contents[i+1] = diary[i];
-            }
-            DiaryList adapter = new DiaryList(DMemoryActivity2.this);
-            list =  (ListView)findViewById(R.id.diaryList);
-            list.setAdapter(adapter);*/
         }
 
         @Override
@@ -249,6 +210,10 @@ public class DMemoryActivity2 extends AppCompatActivity {
             super.onPostExecute(result);
             progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(getApplicationContext(), DMemoryActivity.class);
+            DMemoryActivity2.this.finish();
+            startActivity(i);
         }
 
         @Override

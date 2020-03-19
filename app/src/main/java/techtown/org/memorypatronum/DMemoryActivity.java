@@ -37,7 +37,7 @@ import java.util.HashSet;
 public class DMemoryActivity extends AppCompatActivity {
     MaterialCalendarView memoryCalendar;
 
-    private static String IP_ADDRESS = "192.168.219.183";
+    private static String IP_ADDRESS;
     private static String TAG = "phptest";
 
     HashSet<CalendarDay> dates;
@@ -47,15 +47,19 @@ public class DMemoryActivity extends AppCompatActivity {
 
     String calendarDate;
     String dayOfWeek;
+    String showDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_memory1);
+
+        MyApplication myApp = (MyApplication)getApplication();
+        IP_ADDRESS = myApp.getipAddress();
+
         memoryCalendar = (MaterialCalendarView) findViewById(R.id.memoryCalendar);
         dates = new HashSet<CalendarDay>();
 
-        MyApplication myApp = (MyApplication)getApplication();
         String id = myApp.getLoginID();
         getCalendar task = new getCalendar();
         task.execute("http://" + IP_ADDRESS + "/getCalendar.php", id);
@@ -80,7 +84,7 @@ public class DMemoryActivity extends AppCompatActivity {
                 String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
                         "목요일", "금요일", "토요일"};
                 dayOfWeek = dayString[dayNum-1];
-
+                showDate = year + "년 " + month + "월 " + dayOfMonth + "일 " + dayOfWeek;
                 getWhat task2 = new getWhat();
                 task2.execute("http://" + IP_ADDRESS + "/getWhat.php", id, calendarDate);
             }
@@ -217,22 +221,22 @@ public class DMemoryActivity extends AppCompatActivity {
     }
 
     class getWhat extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
+        //ProgressDialog progressDialog;
 
         @Override
         @SuppressWarnings("unused")
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(DMemoryActivity.this,
-                    "일기를 불러오는 중입니다.", null, true, true);
+            /*progressDialog = ProgressDialog.show(DMemoryActivity.this,
+                    "일기를 불러오는 중입니다.", null, true, true);*/
         }
 
         @Override
         @SuppressWarnings("unused")
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
             if(result != ""){
                 String[] temp = result.split("</br>");
@@ -252,9 +256,11 @@ public class DMemoryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(getApplicationContext(), DMemoryActivity2.class);
-                        intent.putExtra("CalendarDate", calendarDate);
-                        intent.putExtra("dayOfWeek", dayOfWeek);
+                        /*intent.putExtra("CalendarDate", calendarDate);
+                        intent.putExtra("dayOfWeek", dayOfWeek);*/
                         intent.putExtra("did", didList[i]);
+                        intent.putExtra("showDate", showDate);
+                        DMemoryActivity.this.finish();
                         startActivity(intent);
                     }
                 });

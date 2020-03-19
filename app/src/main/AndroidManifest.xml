@@ -29,6 +29,7 @@
         <activity android:name=".DWriteActivity2"/>
         <activity android:name=".DMemoryActivity"/>
         <activity android:name=".DMemoryActivity2"/>
+        <activity android:name=".DMemoryActivity3"/>
         <activity android:name=".DTestActivity"/>
         <service android:name=".RandomService"></service>
     </application>
