@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(LoginActivity.this,
-                    "Please Wait", null, true, true);
+                    "로그인 중입니다.", null, true, true);
         }
 
 
@@ -96,16 +96,17 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.dismiss();
             //mTextViewResult.setText(result);
             Log.d(TAG, "POST response  - " + result);
-            if(result.equals("로그인 실패")){
+            String[] login = result.split("</br>");
+            if(login[0].equals("로그인 성공")){
+                Toast.makeText(getApplicationContext(), login[1], Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                LoginActivity.this.finish();
+                startActivity(intent);
+            }
+            else{
                 Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
                 mEditTextID.setText("");
                 mEditTextPassword.setText("");
-            }
-            else{
-                //로그인 id 설정
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
             }
         }
 

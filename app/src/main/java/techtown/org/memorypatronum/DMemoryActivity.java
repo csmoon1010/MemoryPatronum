@@ -114,7 +114,6 @@ public class DMemoryActivity extends AppCompatActivity {
 
     private HashSet<CalendarDay> getData(){
         HashSet<CalendarDay> dates = new HashSet<CalendarDay>();
-        //DB에서 받아오기
 
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         for(int i = 0; i < calendars.length; i++){
