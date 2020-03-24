@@ -1,28 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#43bfa3">
+    android:background="#ffffff">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_marginTop="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize = "50dp"
-        android:text="Memory\nPatronum"
-        android:textColor = "#000000"
-        android:textStyle="bold"
-        android:fontFamily="@font/ridibatang"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize = "20dp"
-        android:text="치매 예방을 위한 어플"
-        android:textColor = "#000000"
-        android:fontFamily="@font/ridibatang"/>
+    <ImageView
+        android:id="@+id/starticon"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/icon_start" />
 </LinearLayout>

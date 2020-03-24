@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,23 +41,24 @@ public class LoginActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀바 없애기
         setContentView(R.layout.activity_login);
 
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
         mEditTextID = (EditText)findViewById(R.id.editText_main_id);
         mEditTextPassword = (EditText)findViewById(R.id.editText_main_password);
-        mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
 
-        mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
+        /*mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
+
+        mTextViewResult.setMovementMethod(new ScrollingMovementMethod());*/
 
         Button buttonInsert = (Button)findViewById(R.id.button_main_insert);
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             @SuppressWarnings("unused")
             public void onClick(View v) {
-
-                String id = mEditTextID.getText().toString();
+                /*String id = mEditTextID.getText().toString();
                 String password = mEditTextPassword.getText().toString();
 
                 MyApplication myApp = (MyApplication)getApplication();
@@ -65,8 +68,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 mEditTextID.setText("");
-                mEditTextPassword.setText("");
-
+                mEditTextPassword.setText("");*/
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                LoginActivity.this.finish();
+                startActivity(intent);
 
             }
         });

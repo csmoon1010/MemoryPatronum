@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀바 없애기
         setContentView(R.layout.activity_registration);
 
         MyApplication myApp = (MyApplication)getApplication();
@@ -48,9 +51,6 @@ public class RegistrationActivity extends AppCompatActivity {
         mEditTextID = (EditText)findViewById(R.id.editText_main_id);
         mEditTextPassword = (EditText)findViewById(R.id.editText_main_password);
         mEditTextAge = (EditText)findViewById(R.id.editText_main_age);
-        mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
-
-        mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
 
         Button buttonInsert = (Button)findViewById(R.id.button_main_insert);
@@ -72,6 +72,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 mEditTextID.setText("");
                 mEditTextPassword.setText("");
                 mEditTextAge.setText("");
+                RegistrationActivity.this.finish();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
