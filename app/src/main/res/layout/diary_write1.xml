@@ -1,82 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/questionText"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/ridibatang"
-        android:gravity="center"
-        android:text="날짜와 요일을 선택하세요"
-        android:textColor="#000000"
-        android:textSize="25dp"
-        android:layout_weight="2"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일기 쓰기"
+            android:textSize = "20dp"
+            android:fontFamily="@font/hangeulnurib"
+            android:textColor="@android:color/black"
+            android:layout_gravity = "center"/>
+    </androidx.appcompat.widget.Toolbar>
 
-
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/writeCalendar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:mcv_selectionColor="@color/diarySelected"
-        app:mcv_showOtherDates="all"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"/>
-
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="○○○○년 ○○월 ○○일 ○요일"
-        android:textSize = "20dp"
-        android:fontFamily="@font/ridibatang"
-        android:gravity="center"
-        android:layout_weight="2"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_below="@id/my_toolbar"
+        android:layout_above="@+id/layout1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/hangeulnurib"
+            android:gravity="center"
+            android:text="날짜와 요일을 선택하세요"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/writeCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            app:mcv_selectionColor="@color/diarySelected"
+            app:mcv_showOtherDates="all">
+
+        </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/hangeulnurib"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:text="○○○○년 ○○월 ○○일 ○요일"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id = "@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="2">
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="이전"
-            android:textSize="15dp"
-            android:fontFamily="@font/ridibatang"
-            android:enabled="false"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="다음"
-            android:textSize="15dp"
-            android:fontFamily="@font/ridibatang"
-            android:layout_margin="10dp"
+            android:id="@+id/writeButton"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="확인"
+            android:textSize="12dp"
+            android:fontFamily="@font/hangeulnurib"
+            android:background = "@drawable/button_design"
             android:onClick="onNextClick1"/>
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/microphone"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="15dp"
-        android:layout_gravity="center"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:onClick="onVoiceClick"
-        android:scaleType="fitCenter"
-        android:src="@drawable/stopmicrophone" />
-
-</LinearLayout>
+</RelativeLayout>

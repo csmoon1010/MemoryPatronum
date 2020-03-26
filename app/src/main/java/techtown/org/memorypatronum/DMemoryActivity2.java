@@ -6,13 +6,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,21 +32,28 @@ public class DMemoryActivity2 extends AppCompatActivity {
     String dateString;
     String id;
     String did;
-    TextView titleText;
+    EditText titleText;
     TextView contentsText;
     TextView dateText;
     private static String IP_ADDRESS;
     private static String TAG = "phptest";
 
+    Toolbar myToolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_memory2);
 
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
+
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
 
-        titleText = (TextView)findViewById(R.id.memoryTitle);
+        titleText = (EditText)findViewById(R.id.memoryTitle);
         dateText = (TextView)findViewById(R.id.memoryDate);
         contentsText = (TextView)findViewById(R.id.memoryContents);
 
@@ -53,11 +66,31 @@ public class DMemoryActivity2 extends AppCompatActivity {
         getDiary task = new getDiary();
         task.execute("http://" + IP_ADDRESS + "/getDiary.php", id, did);
     }
-    public void onPreviousClick(View view){
-        Intent i = new Intent(getApplicationContext(), DMemoryActivity.class);
-        DMemoryActivity2.this.finish();
-        startActivity(i);
+
+    //toolbar에 main_toolbar.xml 인플레이트
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.sub_toolbar2, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    //toolbar에 추가된 항목의 select 이벤트 처리
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                Intent i = new Intent(getApplicationContext(), DMemoryActivity.class);
+                DMemoryActivity2.this.finish();
+                startActivity(i);
+                break;
+            case R.id.mic:
+                Toast.makeText(getApplicationContext(), "sound clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void onEditClick(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("내용을 수정하시겠습니까?");

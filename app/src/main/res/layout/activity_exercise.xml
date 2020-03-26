@@ -59,12 +59,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/button_design3"
         android:layout_marginBottom="40dp"
+        android:paddingVertical="5dp"
         android:layout_weight="1">
+
         <ListView
-            android:id = "@+id/exerciseList"
+            android:id="@+id/exerciseList"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         </ListView>
+
     </LinearLayout>
+
 </LinearLayout>

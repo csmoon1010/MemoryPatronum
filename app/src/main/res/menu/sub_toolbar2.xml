@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id = "@+id/account"
-        android:icon = "@drawable/ic_person_black_18dp"
-        android:title = "Account"
+        android:id = "@+id/sound"
+        android:icon = "@drawable/ic_volume_up_black_18dp"
+        android:title = "Sound"
         app:showAsAction = "always"/>
 </menu>

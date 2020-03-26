@@ -1,20 +1,29 @@
 package techtown.org.memorypatronum;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -31,22 +40,32 @@ public class DWriteActivity extends AppCompatActivity {
     Calendar calendar2;
     String selectedDate;
     Date resultDate;
-    ImageButton voiceButton;
+    ActionMenuItemView micItem;
 
     Intent speechIntent;
     SpeechRecognizer mRecognizer;
     VoiceRecognition vRecognizer;
+    Drawable on;
+    Drawable off;
 
     Handler handler;
     Runnable runnable;
 
+    Toolbar myToolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_write1);
+
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
+
         writeCalendar = (MaterialCalendarView)findViewById(R.id.writeCalendar);
         dateText = (TextView)findViewById(R.id.dateText);
-        voiceButton = (ImageButton)findViewById(R.id.microphone);
+
         calendar = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
         calendar2.add(calendar2.MONTH, -1);
@@ -74,10 +93,36 @@ public class DWriteActivity extends AppCompatActivity {
                 resultDate = new java.sql.Date(date.getDate().getTime());
             }
         });
+    }
 
-        speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
-        vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), voiceButton, 1);
+    //toolbar에 main_toolbar.xml 인플레이트
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.sub_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //toolbar에 추가된 항목의 select 이벤트 처리
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.mic:
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+
+                vRecognizer.checkPermission(DWriteActivity.this);
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /*Thread SST = new Thread(new Runnable(){
@@ -88,8 +133,8 @@ public class DWriteActivity extends AppCompatActivity {
     });*/
 
     class vRecog extends VoiceRecognition{
-        vRecog(Intent i, SpeechRecognizer r, Context c, ImageButton btn, int m){
-            super(i, r, c, btn, m);
+        vRecog(Intent i, SpeechRecognizer r, Context c, ActionMenuItemView itm, int m, Drawable on, Drawable off){
+            super(i, r, c, itm, m, on, off);
         }
 
         @Override

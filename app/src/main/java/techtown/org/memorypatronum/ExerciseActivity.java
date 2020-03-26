@@ -87,8 +87,10 @@ public class ExerciseActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
             View rowView = inflater.inflate(R.layout.listview_exercise, null, true);
-            Button itemButton = (Button)rowView.findViewById(R.id.itemButton);
-            itemButton.setText(Exercises[position]);
+            /*Button itemButton = (Button)rowView.findViewById(R.id.itemButton);
+            itemButton.setText(Exercises[position]);*/
+            TextView itemText = (TextView)rowView.findViewById(R.id.itemText);
+            itemText.setText(Exercises[position]);
             return rowView;
         }
     }

@@ -7,12 +7,16 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -49,10 +53,17 @@ public class DMemoryActivity extends AppCompatActivity {
     String dayOfWeek;
     String showDate;
 
+    Toolbar myToolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_memory1);
+
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
 
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
@@ -89,6 +100,28 @@ public class DMemoryActivity extends AppCompatActivity {
                 task2.execute("http://" + IP_ADDRESS + "/getWhat.php", id, calendarDate);
             }
         });
+    }
+
+    //toolbar에 main_toolbar.xml 인플레이트
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.sub_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //toolbar에 추가된 항목의 select 이벤트 처리
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.mic:
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public class EventDecorator implements DayViewDecorator {
@@ -149,7 +182,7 @@ public class DMemoryActivity extends AppCompatActivity {
 
             calendars = result.split("\\s");
             dates = getData();
-            EventDecorator decorator = new EventDecorator(Color.RED, dates);
+            EventDecorator decorator = new EventDecorator(R.color.themeColor, dates);
             memoryCalendar.addDecorator(decorator);
         }
 

@@ -5,13 +5,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.drm.DrmStore;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -22,17 +26,21 @@ public class VoiceRecognition {
     SpeechRecognizer recognizer;
     Intent intent;
     Context context;
-    ImageButton button;
+    ActionMenuItemView item;
+    Drawable on;
+    Drawable off;
     int mode;
     String voiceResult = "";
     public String returnString = "";
 
-    VoiceRecognition(Intent i, SpeechRecognizer r, Context c, ImageButton btn, int m){
+    VoiceRecognition(Intent i, SpeechRecognizer r, Context c, ActionMenuItemView itm, int m, Drawable on, Drawable off){
         intent = i;
         recognizer = r;
         context = c;
-        button = btn;
+        item = itm;
         mode = m;
+        this.on = on;
+        this.off = off;
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, c.getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
         recognizer.setRecognitionListener(voiceListener);
@@ -64,7 +72,8 @@ public class VoiceRecognition {
 
         @Override
         public void onBeginningOfSpeech() {
-            button.setImageResource(R.drawable.activemicrophone);
+            item.setIcon(off);
+            //button.setImageResource(R.drawable.activemicrophone);
             //Toast.makeText(context, "말해주세요", Toast.LENGTH_SHORT).show();
         }
 
@@ -84,7 +93,8 @@ public class VoiceRecognition {
 
         @Override
         public void onError(int i) {
-            button.setImageResource(R.drawable.stopmicrophone);
+            item.setIcon(on);
+            //button.setImageResource(R.drawable.stopmicrophone);
             //Toast.makeText(context, "다시 한번 말해주세요", Toast.LENGTH_SHORT).show();
         }
 
@@ -99,7 +109,8 @@ public class VoiceRecognition {
             voiceResult = resultString[0];
             Log.i("result", "speechend" + voiceResult);
             checkVoice(voiceResult);
-            button.setImageResource(R.drawable.stopmicrophone);
+            item.setIcon(on);
+            //button.setImageResource(R.drawable.stopmicrophone);
         }
 
         @Override

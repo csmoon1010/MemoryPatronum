@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize = "27dp"
+            android:textSize = "20dp"
             android:fontFamily="@font/hangeulnurib"
             android:textColor="@color/themeColor"
             android:layout_gravity = "center"/>
@@ -38,7 +38,7 @@
             android:layout_weight="5"
             android:text="[치매 예방 수칙]"
             android:gravity="center_vertical"
-            android:textSize = "15dp"
+            android:textSize = "10dp"
             android:fontFamily="@font/hangeulnurib"/>
 
         <TextView
@@ -46,11 +46,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#BDBDBD"
+            android:background="#D5D5D5"
             android:fontFamily="@font/hangeulnurib"
             android:gravity="center"
             android:text= "가족, 친구들과 자주 소통하기"
-            android:textSize="20dp" />
+            android:textSize="15dp" />
     </LinearLayout>
 
     <LinearLayout

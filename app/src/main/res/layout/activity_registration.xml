@@ -39,7 +39,7 @@
                 android:fontFamily="@font/hangeulnurir"
                 android:text="이름"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <EditText
                 android:id="@+id/editText_main_name"
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,7 +64,7 @@
                 android:fontFamily="@font/hangeulnurir"
                 android:text="나이"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <EditText
                 android:id="@+id/editText_main_age"
@@ -73,7 +73,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +89,7 @@
                 android:fontFamily="@font/hangeulnurir"
                 android:text="아이디"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <EditText
                 android:id="@+id/editText_main_id"
@@ -98,7 +98,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,7 +114,7 @@
                 android:fontFamily="@font/hangeulnurir"
                 android:text="비밀번호"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <EditText
                 android:id="@+id/editText_main_password"
@@ -124,7 +124,7 @@
                 android:fontFamily="sans-serif"
                 android:inputType="textPassword"
                 android:textColor="#000000"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -145,7 +145,7 @@
             android:fontFamily="@font/hangeulnurib"
             android:text="확인"
             android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textSize="12dp" />
     </LinearLayout>
 
 

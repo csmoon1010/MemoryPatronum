@@ -70,8 +70,8 @@
             android:layout_weight="1"
             android:text="일기 쓰기"
             android:background="@drawable/button_design2"
-            android:theme="@style/ButtonStyle"
             android:textSize="20dp"
+            android:fontFamily="@font/hangeulnurib"
             android:onClick="onWriteClick"/>
 
         <Button
@@ -81,8 +81,8 @@
             android:layout_weight="1"
             android:text="나의 일기장"
             android:background="@drawable/button_design2"
-            android:theme="@style/ButtonStyle"
             android:textSize="20dp"
+            android:fontFamily="@font/hangeulnurib"
             android:onClick="onMemoryClick"/>
 
         <Button
@@ -92,8 +92,8 @@
             android:layout_weight="1"
             android:text="회상 테스트"
             android:background="@drawable/button_design3"
-            android:theme="@style/ButtonStyle"
             android:textSize="20dp"
+            android:fontFamily="@font/hangeulnurib"
             android:onClick="onTestClick"/>
     </LinearLayout>
 

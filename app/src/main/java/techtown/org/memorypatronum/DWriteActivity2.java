@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -38,10 +43,17 @@ public class DWriteActivity2 extends AppCompatActivity {
     public String diaryNum;
     Intent intent;
 
+    Toolbar myToolbar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_write2);
+
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
 
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
@@ -54,8 +66,43 @@ public class DWriteActivity2 extends AppCompatActivity {
         calendarText = intent.getStringExtra("CALENDAR");
         dateText.setText(intent.getStringExtra("showDate"));
         //calendarDate = java.sql.Date.valueOf(calendarText);
+    }
 
+    //toolbar에 main_toolbar.xml 인플레이트
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.sub_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    //toolbar에 추가된 항목의 select 이벤트 처리
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("작성을 취소하시겠습니까?\n취소하면 작성했던 모든 내용이 사라집니다.");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DWriteActivity2.this.finish();
+                    }
+                });
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                break;
+            case R.id.mic:
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onNextClick2(View view){
@@ -63,7 +110,7 @@ public class DWriteActivity2 extends AppCompatActivity {
         contentsString = String.valueOf(contentsText.getText());
         if(titleString.equals(""))
             Toast.makeText(getApplicationContext(), "제목을 작성해주세요.", Toast.LENGTH_SHORT).show();
-        if(contentsString.equals(""))
+        else if(contentsString.equals(""))
             Toast.makeText(getApplicationContext(), "내용을 작성해주세요.", Toast.LENGTH_SHORT).show();
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -87,25 +134,6 @@ public class DWriteActivity2 extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
-    }
-
-    public void onCancelClick(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("작성을 취소하시겠습니까?\n취소하면 작성했던 모든 내용이 사라집니다.");
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DWriteActivity2.this.finish();
-            }
-        });
-        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     class DiaryInsertData extends AsyncTask<String, Void, String> {

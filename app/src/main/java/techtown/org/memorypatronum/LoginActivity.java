@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             @SuppressWarnings("unused")
             public void onClick(View v) {
-                /*String id = mEditTextID.getText().toString();
+                String id = mEditTextID.getText().toString();
                 String password = mEditTextPassword.getText().toString();
 
                 MyApplication myApp = (MyApplication)getApplication();
@@ -68,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 mEditTextID.setText("");
-                mEditTextPassword.setText("");*/
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                mEditTextPassword.setText("");
+                /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 LoginActivity.this.finish();
-                startActivity(intent);
+                startActivity(intent);*/
 
             }
         });
