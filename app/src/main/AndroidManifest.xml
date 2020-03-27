@@ -23,6 +23,7 @@
         <activity android:name=".ExerciseActivity"/>
         <activity android:name=".ExerciseActivity2"/>
         <activity android:name=".ExPracticeActivity"/>
+        <activity android:name=".ExVideoActivity"/>
         <activity android:name=".ExTestActivity"/>
         <activity android:name=".DiaryActivity"/>
         <activity android:name=".DWriteActivity"/>

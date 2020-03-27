@@ -24,8 +24,8 @@ import androidx.appcompat.widget.Toolbar;
 public class ExerciseActivity extends AppCompatActivity {
     ListView list;
     String[] Exercises = {
-            "1단계", "2단계", "3단계", "4단계", "5단계"
-    };
+            "온몸 자극하기", "손 운동(박수)", "손 운동(쥐기)", "팔운동(두팔로 하기)",
+            "팔운동(한팔로 하기)", "기 만들기", "기 펼치기", "온몸 가다듬기"};
     Toolbar myToolbar;
 
     @Override
@@ -46,8 +46,8 @@ public class ExerciseActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int level, long l) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseActivity2.class);
-                intent.putExtra("LEVEL", level+1);
+                Intent intent = new Intent(getApplicationContext(),ExVideoActivity.class);
+                intent.putExtra("LEVEL", level);
                 startActivity(intent);
             }
         });
