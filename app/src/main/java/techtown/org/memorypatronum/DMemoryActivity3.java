@@ -1,9 +1,13 @@
 package techtown.org.memorypatronum;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedReader;
@@ -31,6 +36,7 @@ public class DMemoryActivity3 extends AppCompatActivity {
     EditText titleText;
     TextView dateText;
     EditText contentsText;
+    ActionMenuItemView micItem;
 
     private static String IP_ADDRESS;
     private static String TAG = "phptest";
@@ -38,6 +44,15 @@ public class DMemoryActivity3 extends AppCompatActivity {
     String id;
     String did;
     String dateString;
+
+    Intent speechIntent;
+    SpeechRecognizer mRecognizer;
+    VoiceRecognition vRecognizer;
+    Drawable on;
+    Drawable off;
+    EditText currentText;
+    String existText;
+    int position;
 
     Toolbar myToolbar;
     @Override
@@ -87,10 +102,45 @@ public class DMemoryActivity3 extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.mic:
-                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                int currentView = getCurrentFocus().getId();
+                currentText = (EditText)findViewById(currentView);
+                existText = currentText.getText().toString();
+                position = currentText.getSelectionStart();
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new DMemoryActivity3.vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+                vRecognizer.checkPermission(DMemoryActivity3.this);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //음성인식
+    class vRecog extends VoiceRecognition{
+        vRecog(Intent i, SpeechRecognizer r, Context c, ActionMenuItemView itm, int m, Drawable on, Drawable off){
+            super(i, r, c, itm, m, on, off);
+        }
+
+        @Override
+        public void checkVoice(String s) {
+            Log.i("dwrite", "message" + s);
+            if(existText.isEmpty()){
+                currentText.setText(s);
+                currentText.requestFocus();
+            }
+            else    currentText.setText(existText.substring(0, position) + s + existText.substring(position));
+            currentText.setSelection(position + s.length());
+        }
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        if(vRecognizer != null){
+            vRecognizer = null;
+        }
     }
 
     public void onEditCompleteClick(View view){

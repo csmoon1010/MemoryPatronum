@@ -1,10 +1,13 @@
 package techtown.org.memorypatronum;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,6 +31,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
+
+import static java.lang.Thread.sleep;
 
 //저장된 일기 창
 public class DMemoryActivity2 extends AppCompatActivity {
@@ -37,6 +45,8 @@ public class DMemoryActivity2 extends AppCompatActivity {
     TextView dateText;
     private static String IP_ADDRESS;
     private static String TAG = "phptest";
+
+    TextToSpeech tts;
 
     Toolbar myToolbar;
     @Override
@@ -65,6 +75,21 @@ public class DMemoryActivity2 extends AppCompatActivity {
         did = intent.getStringExtra("did");
         getDiary task = new getDiary();
         task.execute("http://" + IP_ADDRESS + "/getDiary.php", id, did);
+
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if(i != TextToSpeech.ERROR){
+                    int language = tts.setLanguage(Locale.KOREAN);
+                    if(language == TextToSpeech.LANG_NOT_SUPPORTED){
+                        Toast.makeText(getApplicationContext(), "지원하지 않는 언어", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "TTS작업 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     //toolbar에 main_toolbar.xml 인플레이트
@@ -84,11 +109,49 @@ public class DMemoryActivity2 extends AppCompatActivity {
                 DMemoryActivity2.this.finish();
                 startActivity(i);
                 break;
-            case R.id.mic:
-                Toast.makeText(getApplicationContext(), "sound clicked", Toast.LENGTH_SHORT).show();
+            case R.id.sound:
+                Toast.makeText(getApplicationContext(), "음성 출력", Toast.LENGTH_SHORT).show();
+                //음성출력
+                String speech1 = "일기를 읽어드립니다";
+                String speech2 = titleText.getText().toString();
+                String speech3 = contentsText.getText().toString();
+                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO)
+                        != PackageManager.PERMISSION_GRANTED) { //권한허용 안함 --> 권한요청
+                    ActivityCompat.requestPermissions(DMemoryActivity2.this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+                }
+                else{ //권한 허용함
+                    try{
+                        Log.i("speech", speech3);
+                        tts.setPitch(1.0f);
+                        tts.setSpeechRate(1.0f);
+                        tts.speak(speech1, TextToSpeech.QUEUE_FLUSH, null, null);
+                        try{
+                            sleep(3000);
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }
+                        tts.speak(speech2, TextToSpeech.QUEUE_FLUSH, null, null);
+                        try{
+                            sleep(3000);
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }
+                        tts.speak(speech3, TextToSpeech.QUEUE_FLUSH, null, null);
+                    }catch(SecurityException e){
+                        e.printStackTrace();
+                    }
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onDestroy(){
+        if(tts != null){
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 
     public void onEditClick(View view){

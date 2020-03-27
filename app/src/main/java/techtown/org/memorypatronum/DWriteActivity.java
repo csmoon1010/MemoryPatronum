@@ -96,12 +96,12 @@ public class DWriteActivity extends AppCompatActivity {
     }
 
     //toolbar에 main_toolbar.xml 인플레이트
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.sub_toolbar, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     //toolbar에 추가된 항목의 select 이벤트 처리
     @Override
@@ -110,7 +110,7 @@ public class DWriteActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.mic:
+            /*case R.id.mic:
                 on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
                 off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
                 micItem = (ActionMenuItemView) findViewById(R.id.mic);
@@ -120,7 +120,7 @@ public class DWriteActivity extends AppCompatActivity {
 
                 vRecognizer.checkPermission(DWriteActivity.this);
                 Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }
@@ -132,7 +132,7 @@ public class DWriteActivity extends AppCompatActivity {
         }
     });*/
 
-    class vRecog extends VoiceRecognition{
+    /*class vRecog extends VoiceRecognition{
         vRecog(Intent i, SpeechRecognizer r, Context c, ActionMenuItemView itm, int m, Drawable on, Drawable off){
             super(i, r, c, itm, m, on, off);
         }
@@ -145,7 +145,7 @@ public class DWriteActivity extends AppCompatActivity {
             selectedDate = s;
             dateText.setText(s);
         }
-    }
+    }*/
 
     public void onNextClick1(View view){
         if(dateText.getText().equals("○○○○년 ○○월 ○○일 ○요일")){
@@ -172,11 +172,11 @@ public class DWriteActivity extends AppCompatActivity {
         //checkVoice(vRecognizer.returnString);
     }
 
-    public void onDestroy(){
+    /*public void onDestroy(){
         super.onDestroy();
         if(vRecognizer != null){
             vRecognizer = null;
         }
-    }
+    }*/
 }
 
