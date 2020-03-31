@@ -30,6 +30,7 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     //toolbar에 main_toolbar.xml 인플레이트
+    //check merge
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
