@@ -14,4 +14,7 @@ public class MyApplication extends Application { //공용 변수 정의
     public String getipAddress(){
         return address;
     }
+
+
+
 }

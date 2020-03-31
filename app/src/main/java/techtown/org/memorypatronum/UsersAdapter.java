@@ -32,13 +32,28 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.CustomViewHo
 
     private ArrayList<PersonalData> mList = null;
     private Activity context = null;
+    //private String calendarText = null;
+
+    public String calendarText;
+    //public String[] listItems;
+    public int i;
 
 
 
-    public UsersAdapter(Activity context, ArrayList<PersonalData> list) {
+
+
+
+
+    public UsersAdapter(Activity context, ArrayList<PersonalData> list, String calendarText, int i) {
+        this.calendarText = calendarText;
+        this.i = i;
+
         this.context = context;
         this.mList = list;
+
     }
+
+
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         protected TextView name;
@@ -59,7 +74,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.CustomViewHo
         return viewHolder;
     }
 
-    @Override
+
     public void onBindViewHolder(@NonNull final CustomViewHolder viewholder, int position) {
 
 
@@ -70,13 +85,36 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.CustomViewHo
             @Override
             public void onClick(View view) {
                 String curName = viewholder.name.getText().toString();
+                String calendar = calendarText;
+
+
 
 
 
                 Toast.makeText(view.getContext(), "음식이 저장되었습니다", Toast.LENGTH_SHORT).show();
 
                 InsertData task = new InsertData();
-                task.execute("http://" + IP_ADDRESS + "/insert_food.php", curName);
+
+                switch (i) {
+                    case 0:
+                        task.execute("http://" + IP_ADDRESS + "/insert_food0.php", calendar, curName);
+                        break;
+
+                    case 1:
+                        task.execute("http://" + IP_ADDRESS + "/insert_food1.php", calendar, curName);
+                        break;
+
+                    case 2:
+                        task.execute("http://" + IP_ADDRESS + "/insert_food2.php", calendar, curName);
+                        break;
+
+                    case 3:
+                        task.execute("http://" + IP_ADDRESS + "/insert_food3.php", calendar, curName);
+                        break;
+
+                }
+
+
 
 
 
@@ -120,11 +158,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.CustomViewHo
         @Override
         protected String doInBackground(String... params) {
 
-            String curName = (String)params[1];
+            String calendar = (String)params[1];
+            String curName = (String)params[2];
 
 
             String serverURL = (String)params[0];
-            String postParameters = "curName=" + curName;
+            String postParameters = "&calendar=" + calendar + "&curName=" + curName;
 
 
             try {

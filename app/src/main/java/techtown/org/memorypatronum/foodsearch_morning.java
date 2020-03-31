@@ -1,6 +1,7 @@
 package techtown.org.memorypatronum;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,9 @@ import java.util.ArrayList;
 
 
 public class foodsearch_morning extends AppCompatActivity {
+
+    public String calendarText;
+    public int i;
 
     private static String IP_ADDRESS = "memorypatronum.dothome.co.kr";
     private static String TAG = "phpexample";
@@ -62,8 +66,14 @@ public class foodsearch_morning extends AppCompatActivity {
 
         mArrayList = new ArrayList<>();
 
-        mAdapter = new UsersAdapter(this, mArrayList);
+        Intent intent = getIntent();
+        calendarText = intent.getStringExtra("CALENDAR");
+        i = intent.getIntExtra("MLDS", -1);
+
+        mAdapter = new UsersAdapter(this, mArrayList, calendarText, i);
         mRecyclerView.setAdapter(mAdapter);
+
+
 
 
 
