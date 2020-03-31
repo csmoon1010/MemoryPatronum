@@ -113,9 +113,6 @@ public class DTestActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.mic:
-                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -274,7 +271,7 @@ public class DTestActivity extends AppCompatActivity {
                 builder.setItems(doWhat, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(getApplicationContext(), DMemoryActivity2.class);
+                        Intent intent = new Intent(getApplicationContext(), DTestActivity2.class);
                         //test할 did, showDate보내기
                         intent.putExtra("did", didList[i]);
                         intent.putExtra("showDate", showDate);
