@@ -78,4 +78,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), DiaryActivity.class);
         startActivity(intent);
     }
+
+    public void foodClick(View view){
+        Intent intent = new Intent(getApplicationContext(), FoodMain.class);
+        startActivity(intent);
+    }
 }
