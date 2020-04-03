@@ -4,11 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +38,7 @@ public class foodsearch_morning extends AppCompatActivity {
 
     public String calendarText;
     public int i;
+    public String id;
 
     private static String IP_ADDRESS = "memorypatronum.dothome.co.kr";
     private static String TAG = "phpexample";
@@ -41,11 +46,14 @@ public class foodsearch_morning extends AppCompatActivity {
     private EditText mEditTextName;
     /*private EditText mEditTextCountry;*/
     private TextView mTextViewResult;
+    private TextView RealtimeInsert;
     private ArrayList<PersonalData> mArrayList;
     private UsersAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private EditText mEditTextSearchKeyword;
     private String mJsonString;
+
+    Toolbar myToolbar;
 
 
     @Override
@@ -53,8 +61,15 @@ public class foodsearch_morning extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.foodsearch_morning);
 
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
+
 
         mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
+        RealtimeInsert = (TextView)findViewById(R.id.texttext);
         mRecyclerView = (RecyclerView) findViewById(R.id.listView_main_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -70,7 +85,10 @@ public class foodsearch_morning extends AppCompatActivity {
         calendarText = intent.getStringExtra("CALENDAR");
         i = intent.getIntExtra("MLDS", -1);
 
-        mAdapter = new UsersAdapter(this, mArrayList, calendarText, i);
+        MyApplication myApp = (MyApplication) getApplication();
+        String id = myApp.getLoginID();
+
+        mAdapter = new UsersAdapter(this, mArrayList, calendarText, i, id, RealtimeInsert);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -324,6 +342,28 @@ public class foodsearch_morning extends AppCompatActivity {
             Log.d(TAG, "showResult : ", e);
         }
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            /*case R.id.mic:
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+
+                vRecognizer.checkPermission(DWriteActivity.this);
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

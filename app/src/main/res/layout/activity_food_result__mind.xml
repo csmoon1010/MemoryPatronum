@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="결과 확인"
+            android:textSize = "20dp"
+            android:fontFamily="@font/hangeulnurib"
+            android:textColor="@android:color/black"
+            android:layout_gravity = "center"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/hangeulnurib"
+        android:gravity="center"
+        android:textSize="17dp"
+        android:text="\n오늘 먹은 음식 목록"
+        android:textColor="@color/themeColor"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="20dp"
+        android:layout_marginTop="10dp">
 
 
 
 
-
-
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_margin="5dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="300dp"
         android:layout_weight="8"
+        android:background="#D5D5D5"
         android:id="@+id/listView_main_list" />
+
+    </LinearLayout>
+
+
 
 
 
@@ -38,15 +70,19 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MIND 식단 일일 결과입니다" />
+        android:gravity="center"
+        android:textSize="17dp"
+        android:text="MIND 식단 일일 결과입니다\n"
+        android:textColor="@color/themeColor"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2.5"
         android:layout_margin="5dp"
+        android:text="\n"
         android:padding="5dp"
         android:id="@+id/textView_main_result2" />
 
@@ -62,32 +98,4 @@
 
 
 
-
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="뒤로 가기"
-            android:textSize="15dp"
-            android:fontFamily="@font/ridibatang"
-            android:layout_margin="10dp"
-            android:onClick = "onPreviousClick"/>
-
-
-
-
-
-    </LinearLayout>
 </LinearLayout>

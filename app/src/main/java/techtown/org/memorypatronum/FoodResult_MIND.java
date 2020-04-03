@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,6 +63,8 @@ public class FoodResult_MIND extends AppCompatActivity {
     private TextView mTextViewResult2;
     private String mJsonString2;
 
+    Toolbar myToolbar;
+
 
 
 
@@ -78,6 +82,12 @@ public class FoodResult_MIND extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_result__mind);
+
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
 
         mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
         mArrayList = new ArrayList<>();
@@ -107,6 +117,7 @@ public class FoodResult_MIND extends AppCompatActivity {
 
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
+        String id = myApp.getLoginID();
 
         //titleText = (TextView)findViewById(R.id.memoryTitle);
         //dateText = (TextView)findViewById(R.id.memoryDate);
@@ -124,13 +135,13 @@ public class FoodResult_MIND extends AppCompatActivity {
         //id = myApp.getLoginID();
         //did = intent.getStringExtra("did");
         getFood task = new getFood();
-        task.execute("http://" + IP_ADDRESS + "/querydate.php", calendarText);
+        task.execute("http://" + IP_ADDRESS + "/querydate.php", id, calendarText);
 
         mArrayList2.clear();
         mAdapter2.notifyDataSetChanged();
 
         GetData task2 = new GetData();
-        task2.execute("http://" + IP_ADDRESS + "/fac.php", calendarText);
+        task2.execute("http://" + IP_ADDRESS + "/fac.php", id, calendarText);
 
 
 
@@ -192,11 +203,12 @@ public class FoodResult_MIND extends AppCompatActivity {
         protected String doInBackground(String... params) {
             //String id = (String)params[1];
             //String did = (String)params[2];
-            String calendarText = (String)params[1];
+            String id = (String)params[1];
+            String calendarText = (String)params[2];
             //String type = (String)params[2];
 
             String serverURL = (String)params[0];
-            String postParameters = "calendarText=" + calendarText;
+            String postParameters = "&id=" + id + "&calendarText=" + calendarText;
 
 
             try {
@@ -819,9 +831,10 @@ public class FoodResult_MIND extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params){
             String severURL = (String)params[0];
-            String calendarText = (String)params[1];
+            String id = (String)params[1];
+            String calendarText = (String)params[2];
 
-            String postParameters = "calendarText=" + calendarText;
+            String postParameters = "&id=" + id + "&calendarText=" + calendarText;
 
 
             try {
@@ -920,6 +933,28 @@ public class FoodResult_MIND extends AppCompatActivity {
             Log.d(TAG, "showResult2 :", e);
         }
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            /*case R.id.mic:
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+
+                vRecognizer.checkPermission(DWriteActivity.this);
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

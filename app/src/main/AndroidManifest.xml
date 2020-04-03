@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="techtown.org.memorypatronum">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.Camera" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -10,7 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FoodResult_MIND"></activity>
+        <activity android:name=".GameLevel_5"></activity>
+        <activity android:name=".GameLevel_4" />
+        <activity android:name=".GameLevel_3" />
+        <activity android:name=".GameLevel_2" />
+        <activity android:name=".GameLevel_1" />
+        <activity android:name=".GameMain" />
+        <activity android:name=".FoodInfo" />
+        <activity android:name=".FoodResult_MIND" />
         <activity android:name=".FoodOutput_cal" />
         <activity android:name=".FoodInput_cal" />
         <activity android:name=".FoodMain" />
@@ -21,32 +35,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".ExerciseActivity"/>
-        <activity android:name=".ExerciseActivity2"/>
-        <activity android:name=".ExPracticeActivity"/>
-        <activity android:name=".ExVideoActivity"/>
-        <activity android:name=".ExTestActivity"/>
-        <activity android:name=".DiaryActivity"/>
-        <activity android:name=".DWriteActivity"/>
-        <activity android:name=".DWriteActivity2"/>
-        <activity android:name=".DMemoryActivity"/>
-        <activity android:name=".DMemoryActivity2"/>
-        <activity android:name=".DMemoryActivity3"/>
-        <activity android:name=".DTestActivity"/>
-        <activity android:name=".DTestActivity2"/>
-        <service android:name=".RandomService"></service>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".ExerciseActivity" />
+        <activity android:name=".ExerciseActivity2" />
+        <activity android:name=".ExPracticeActivity" />
+        <activity android:name=".ExVideoActivity" />
+        <activity android:name=".ExTestActivity" />
+        <activity android:name=".DiaryActivity" />
+        <activity android:name=".DWriteActivity" />
+        <activity android:name=".DWriteActivity2" />
+        <activity android:name=".DMemoryActivity" />
+        <activity android:name=".DMemoryActivity2" />
+        <activity android:name=".DMemoryActivity3" />
+        <activity android:name=".DTestActivity" />
+        <activity android:name=".DTestActivity2" />
+
+        <service android:name=".RandomService" />
+
         <activity android:name=".foodsearch_morning" />
-
-
 
         <service android:name=".RandomService" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.Camera" />
+
 </manifest>

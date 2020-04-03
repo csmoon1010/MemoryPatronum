@@ -3,6 +3,7 @@ package techtown.org.memorypatronum;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -37,6 +39,8 @@ public class FoodInput_cal extends AppCompatActivity {
 
     Intent speechIntent;
 
+    Toolbar myToolbar;
+
 
     Handler handler;
     Runnable runnable;
@@ -45,6 +49,15 @@ public class FoodInput_cal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_input_cal);
+
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_black_18dp);
+
+        //MyApplication myApp = (MyApplication) getApplication();
+        //String id = myApp.getLoginID();
 
         writeCalendar = (MaterialCalendarView)findViewById(R.id.writeCalendar);
         dateText = (TextView)findViewById(R.id.dateText);
@@ -93,13 +106,21 @@ public class FoodInput_cal extends AppCompatActivity {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(FoodInput_cal.this);
             mBuilder.setTitle("먹은 밥 시간대를 고르세요");
 
+
+
             mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    //MyApplication myApp = (MyApplication) getApplication();
+                    //String id = myApp.getLoginID();
                     Intent intent = new Intent(getApplicationContext(), foodsearch_morning.class);
                     intent.putExtra("showDate", dateText.getText().toString());
                     intent.putExtra("CALENDAR", resultDate.toString());
                     intent.putExtra("MLDS", i);
+                    //intent.putExtra("ID", id.toString());
+
+
+
                     startActivity(intent);
 
 
@@ -124,6 +145,27 @@ public class FoodInput_cal extends AppCompatActivity {
             //startActivity(intent);
             //finish();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            /*case R.id.mic:
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+
+                vRecognizer.checkPermission(DWriteActivity.this);
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

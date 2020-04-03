@@ -12,13 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class FoodMain extends AppCompatActivity {
+public class GameMain extends AppCompatActivity {
     Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_main);
+        setContentView(R.layout.activity_game_main);
 
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -50,19 +50,29 @@ public class FoodMain extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onMindClick(View view){
-        Intent intent = new Intent(getApplicationContext(), FoodInfo.class);
+    public void onLevel1Click(View view){
+        Intent intent = new Intent(getApplicationContext(), GameLevel_1.class);
         startActivity(intent);
     }
 
 
-    public void onFoodinputClick(View view){
-        Intent intent = new Intent(getApplicationContext(), FoodInput_cal.class);
+    public void onLevel2Click(View view){
+        Intent intent = new Intent(getApplicationContext(), GameLevel_2.class);
         startActivity(intent);
     }
 
-    public void onFoodoutputClick(View view){
-        Intent intent = new Intent(getApplicationContext(), FoodOutput_cal.class);
+    public void onLevel3Click(View view){
+        Intent intent = new Intent(getApplicationContext(), GameLevel_3.class);
+        startActivity(intent);
+    }
+
+    public void onLevel4Click(View view){
+        Intent intent = new Intent(getApplicationContext(), GameLevel_4.class);
+        startActivity(intent);
+    }
+
+    public void onLevel5Click(View view){
+        Intent intent = new Intent(getApplicationContext(), GameLevel_5.class);
         startActivity(intent);
     }
 
