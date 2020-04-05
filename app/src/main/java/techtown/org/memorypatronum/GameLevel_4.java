@@ -280,9 +280,10 @@ public class GameLevel_4 extends AppCompatActivity {
                         .setPositiveButton("한번 더", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), GameLevel_4.class);
                                 startActivity(intent);
                                 finish();
+
 
                             }
                         })
