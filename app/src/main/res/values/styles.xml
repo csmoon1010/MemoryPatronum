@@ -20,4 +20,8 @@
         <item name="colorButtonNormal">@color/buttonColor</item>
     </style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/themeColor</item>
+    </style>
+
 </resources>

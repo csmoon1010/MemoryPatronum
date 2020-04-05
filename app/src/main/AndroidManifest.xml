@@ -51,11 +51,9 @@
         <activity android:name=".DMemoryActivity3" />
         <activity android:name=".DTestActivity" />
         <activity android:name=".DTestActivity2" />
-
-        <service android:name=".RandomService" />
-
+        <activity android:name=".DTestActivity3"/>
+        <activity android:name=".DTestActivity4"/>
         <activity android:name=".foodsearch_morning" />
-
         <service android:name=".RandomService" />
     </application>
 

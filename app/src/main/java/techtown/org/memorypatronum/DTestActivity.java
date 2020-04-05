@@ -1,5 +1,6 @@
 package techtown.org.memorypatronum;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -60,6 +61,7 @@ public class DTestActivity extends AppCompatActivity {
     String showDate;
 
     Toolbar myToolbar;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,7 @@ public class DTestActivity extends AppCompatActivity {
         IP_ADDRESS = myApp.getipAddress();
 
         testCalendar = (MaterialCalendarView)findViewById(R.id.testCalendar);
+        progressDialog = new ProgressDialog(DTestActivity.this);
         dates = new HashSet<CalendarDay>();
         String id = myApp.getLoginID();
         getCalendar task = new getCalendar();
@@ -252,7 +255,6 @@ public class DTestActivity extends AppCompatActivity {
         @SuppressWarnings("unused")
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            //progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
             if(result != ""){
                 String[] temp = result.split("</br>");
@@ -275,6 +277,8 @@ public class DTestActivity extends AppCompatActivity {
                         //test할 did, showDate보내기
                         intent.putExtra("did", didList[i]);
                         intent.putExtra("showDate", showDate);
+                        LoadingActivity task = new LoadingActivity();
+                        task.execute();
                         DTestActivity.this.finish();
                         startActivity(intent);
                     }
@@ -351,6 +355,27 @@ public class DTestActivity extends AppCompatActivity {
                 return new String("Error: " + e.getMessage());
             }
 
+        }
+    }
+
+    private class LoadingActivity extends AsyncTask<Void, Void, Void>{
+        ProgressDialog asyncDialog = new ProgressDialog(DTestActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            asyncDialog.setMessage("로딩중입니다.");
+            asyncDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
         }
     }
 }
