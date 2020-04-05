@@ -52,7 +52,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="1"
-                android:text="기능설명\n...\n..." />
+                android:gravity="center"
+                android:textSize="14dp"
+                android:text="\n회상일기 설명" />
         </LinearLayout>
     </LinearLayout>
 

@@ -95,7 +95,7 @@ public class FoodInfo extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(FoodInfo.this);
                 builder.setMessage(Html.fromHtml("<strong><font face=\"hangeulnurib\">"
-                        + "콩류 설명"
+                        + "콩류에는 단백질과 섬유질이 풍부하고, 칼로리와 지방은 적어서 심혈관 질환 예방과 뇌 건강에 도움을 준다."
                         + "</font></strong><br>"))
                         .setNegativeButton("취소", null);
 
@@ -110,7 +110,9 @@ public class FoodInfo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(FoodInfo.this);
-                builder.setMessage("hoho")
+                builder.setMessage(Html.fromHtml("<strong><font face=\"hangeulnurib\">"
+                        + "흰색 고기인 가금류(오리, 닭, 거위)는 뇌 건강에 좋다. 붉은 고기인 소, 돼지 대신 가금류를 먹어야 한다."
+                        + "</font></strong><br>"))
                         .setNegativeButton("취소", null);
 
                 AlertDialog alert = builder.create();

@@ -77,7 +77,7 @@ public class GameLevel_4 extends AppCompatActivity {
         Collections.shuffle(Arrays.asList(cardsArray));
         frontOfCardsResources();
 
-        countDownTimer = new CountDownTimer(30000, 1000) {
+        countDownTimer = new CountDownTimer(45000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 t1.setText(millisUntilFinished/1000 + "sec left");

@@ -73,7 +73,7 @@ public class GameLevel_2 extends AppCompatActivity {
         frontOfCardsResources();
 
 
-        countDownTimer = new CountDownTimer(30000, 1000) {
+        countDownTimer = new CountDownTimer(45000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 t1.setText(millisUntilFinished/1000 + "초 남았습니다");

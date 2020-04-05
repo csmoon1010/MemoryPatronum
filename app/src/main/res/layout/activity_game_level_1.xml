@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="450dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="201dp" />
+        tools:layout_editor_absoluteY="110dp" />
+
 
 
     <Button
@@ -41,6 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.893"/>
+        app:layout_constraintVertical_bias="0.893" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

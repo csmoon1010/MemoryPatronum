@@ -52,7 +52,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="1"
-                android:text="기능설명\n...\n..." />
+                android:gravity="center"
+                android:textSize="14dp"
+                android:text="\n동영상을 보고 치매 예방에 도움이 되는 체조를 단계별로 직접 따라해본다." />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

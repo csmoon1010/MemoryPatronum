@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -68,7 +69,7 @@ public class GameLevel_1 extends AppCompatActivity {
         Collections.shuffle(Arrays.asList(cardsArray));
         frontOfCardsResources();
 
-        countDownTimer = new CountDownTimer(30000, 1000) {
+        countDownTimer = new CountDownTimer(45000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 t1.setText(millisUntilFinished/1000 + "sec left");
@@ -178,6 +179,7 @@ public class GameLevel_1 extends AppCompatActivity {
                         });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+                //finish();
 
             }
         };
@@ -375,6 +377,27 @@ public class GameLevel_1 extends AppCompatActivity {
         image204 = R.drawable.mouse2;
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            /*case R.id.mic:
+                on = getResources().getDrawable(R.drawable.ic_mic_black_18dp, null);
+                off = getResources().getDrawable(R.drawable.ic_mic_off_black_18dp, null);
+                micItem = (ActionMenuItemView) findViewById(R.id.mic);
+                speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                vRecognizer = new vRecog(speechIntent, mRecognizer, getApplicationContext(), micItem, 1, on, off);
+
+                vRecognizer.checkPermission(DWriteActivity.this);
+                Toast.makeText(getApplicationContext(), "mic clicked", Toast.LENGTH_SHORT).show();
+                break;*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

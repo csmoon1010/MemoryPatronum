@@ -83,7 +83,7 @@ public class GameLevel_5 extends AppCompatActivity {
         frontOfCardsResources();
 
 
-        countDownTimer = new CountDownTimer(90000, 1000) {
+        countDownTimer = new CountDownTimer(45000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 t1.setText(millisUntilFinished/1000 + "sec left");
@@ -334,7 +334,7 @@ public class GameLevel_5 extends AppCompatActivity {
                             }
                         });
                 AlertDialog alertDialog = alertDialogBuilder.create();
-                //alertDialog.show();
+                alertDialog.show();
 
             }
         };
