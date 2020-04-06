@@ -44,7 +44,8 @@ public class FoodMain extends AppCompatActivity {
                 finish();
                 break;
             case R.id.account:
-                Toast.makeText(getApplicationContext(), "account clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);

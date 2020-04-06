@@ -14,9 +14,21 @@ public class StartActivity extends AppCompatActivity {
     Runnable r = new Runnable(){
         @Override
         public void run() {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            if(SharedPreference.getId(StartActivity.this).length() == 0){
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else{
+                MyApplication myApp = (MyApplication)getApplication();
+                myApp.setLoginID(SharedPreference.getId(StartActivity.this));
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
-            finish();
+            finish();*/
         }
     };
     @Override

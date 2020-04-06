@@ -54,6 +54,7 @@
         <activity android:name=".DTestActivity3"/>
         <activity android:name=".DTestActivity4"/>
         <activity android:name=".foodsearch_morning" />
+        <activity android:name=".AccountActivity"/>
         <service android:name=".RandomService" />
     </application>
 
