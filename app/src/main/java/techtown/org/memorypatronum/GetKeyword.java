@@ -124,7 +124,6 @@ public class GetKeyword {
 
 
         finalMatrix = transMatrix.mmul(wordMatrix);
-
         temp = "";
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < m; j++) {
@@ -133,14 +132,6 @@ public class GetKeyword {
             temp = temp + "/";
         }
         Log.i("finalMatrix", temp);
-        temp = "";
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                temp = temp + wordMatrix.getFloat(i*m + j) + " ";
-            }
-            temp = temp + "/";
-        }
-        Log.i("wordMatrix", temp);
 
         return n;
     }
@@ -171,8 +162,44 @@ public class GetKeyword {
             finalMatrix.putScalar(matrix_size*i + i, 1);
         }
 
+        temp = "";
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                temp = temp + finalMatrix.getFloat(i*m + j) + " ";
+            }
+            temp = temp + "/";
+        }
+        Log.i("finalMatrix", temp);
+
         INDArray tempMatrix = Nd4j.zeros(matrix_size, 1).addi(1-d);
+        for(int i = 0; i < m; i++){
+            float num = tempMatrix.getFloat(i);
+            tempMatrix.putScalar(i, Math.round(num*100)/100.0); //0.15로
+        }
+
+        temp = "";
+        for (int i = 0; i < m; i++) {
+            temp = temp + tempMatrix.getFloat(i) + " ";
+        }
+        Log.i("tempMatrix", temp);
+
+
         finalMatrix = InvertMatrix.invert(finalMatrix, true);
+        for(int i = 0; i < m; i++){ //소수점 2자리까지
+            for(int j = 0;j < m; j++){
+                float num = finalMatrix.getFloat(i*m + j);
+                finalMatrix.putScalar(i*m+j, Math.round(num*100));
+            }
+        }
+        temp = "";
+        for (int i = 0; i < m; i++) {
+            for(int j = 0; j < m; j++)
+            {
+                temp = temp + finalMatrix.getFloat(i*m + j) + " ";
+            }
+        }
+        Log.i("inverseMatrix", temp);
+
         INDArray resultMatrix = finalMatrix.mmul(tempMatrix);
 
         HashMap<String, Float> resultHash = new HashMap<>();

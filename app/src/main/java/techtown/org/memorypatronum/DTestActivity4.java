@@ -20,7 +20,7 @@ public class DTestActivity4 extends AppCompatActivity {
         int totalNum = intent.getIntExtra("total", 0);
 
         TextView scoreText = (TextView)findViewById(R.id.scoreText);
-        scoreText.setText(totalNum + "개 중\n" + correctNum + "개를 맞추셨습니다!");
+        scoreText.setText(totalNum + "개 중" + correctNum + "개를\n 맞추셨습니다!");
     }
 
     public void backClick(View view){

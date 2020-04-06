@@ -53,7 +53,7 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="14dp"
+                android:textSize="13dp"
                 android:text="\n하루동안 먹은 음식을 검색해 저장하고,\nMIND 식단에 따른 일일 결과를 확인한다."/>
         </LinearLayout>
     </LinearLayout>

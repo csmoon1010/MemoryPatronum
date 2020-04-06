@@ -88,14 +88,6 @@ public class DTestActivity2 extends AppCompatActivity {
         nounpos = new ArrayList<>();
     }
 
-    //toolbar에 main_toolbar.xml 인플레이트
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.sub_toolbar2, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     //toolbar에 추가된 항목의 select 이벤트 처리
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

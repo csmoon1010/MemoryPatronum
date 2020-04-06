@@ -53,8 +53,8 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="14dp"
-                android:text="\n회상일기 설명" />
+                android:textSize="13dp"
+                android:text="\n하루동안 있었던 일을\n일기로 기록하고\n키워드 빈칸 채우기\n회상 테스트를 진행한다." />
         </LinearLayout>
     </LinearLayout>
 

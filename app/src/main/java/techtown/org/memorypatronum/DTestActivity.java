@@ -102,7 +102,7 @@ public class DTestActivity extends AppCompatActivity {
                 String[] dayString =  {"일요일", "월요일", "화요일", "수요일",
                         "목요일", "금요일", "토요일"};
                 dayOfWeek = dayString[dayNum-1];
-                showDate = year + "년 " + month + "월 " + dayOfMonth + "일 " + dayOfWeek;
+                showDate = year + "년 " + (month+1) + "월 " + dayOfMonth + "일 " + dayOfWeek;
                 getWhat task2 = new getWhat();
                 task2.execute("http://" + IP_ADDRESS + "/getWhat.php", id, calendarDate);
             }

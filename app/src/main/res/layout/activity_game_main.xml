@@ -53,7 +53,7 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="14dp"
+                android:textSize="13dp"
                 android:text="\n카드 짝맞추기 게임\n단계가 올라갈 때마다 맞추어야 하는 카드 수가 늘어나며, 제한시간은 45초이다." />
         </LinearLayout>
     </LinearLayout>
