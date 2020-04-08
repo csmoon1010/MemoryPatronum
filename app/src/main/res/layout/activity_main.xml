@@ -42,7 +42,7 @@
             android:fontFamily="@font/hangeulnurib"/>
 
         <TextView
-            android:id="@+id/title2"
+            android:id="@+id/ruleText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
