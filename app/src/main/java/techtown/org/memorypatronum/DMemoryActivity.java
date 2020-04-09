@@ -174,7 +174,7 @@ public class DMemoryActivity extends AppCompatActivity {
 
             calendars = result.split("\\s");
             dates = getData();
-            EventDecorator decorator = new EventDecorator(R.color.themeColor, dates);
+            EventDecorator decorator = new EventDecorator(R.color.textcolorPrimary, dates);
             memoryCalendar.addDecorator(decorator);
         }
 
