@@ -56,19 +56,6 @@ public class FoodOutput_cal extends AppCompatActivity {
     String showDate;
 
 
-    //원래 코드에 선언됐던 애들
-    /*String[] listItems;
-    MaterialCalendarView writeCalendar;//DMemoryActivity에서는 memoryCalendar와 동일한 값. 그리고 이게 보여지는 달 수랑 관련 있대
-
-    TextView dateText;
-    Calendar calendar;
-    Calendar calendar2;
-    String selectedDate;
-    Date resultDate;*/
-    //여기까지
-
-
-
 
 
 
