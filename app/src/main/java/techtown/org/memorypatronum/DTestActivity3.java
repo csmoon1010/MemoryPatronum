@@ -6,6 +6,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -51,6 +52,8 @@ public class DTestActivity3 extends AppCompatActivity {
     AnswerConstruct a;
 
     int size;
+    int index = 0; //전문장용
+
     Komoran komoran;
     class AnswerConstruct{
         int sentenceNum;
@@ -71,6 +74,7 @@ public class DTestActivity3 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_test3);
+
         dateText = (TextView)findViewById(R.id.testDate);
         titleText = (TextView) findViewById(R.id.testTitle);
         questionText = (TextView)findViewById(R.id.questionText);
@@ -134,7 +138,7 @@ public class DTestActivity3 extends AppCompatActivity {
         }
         Log.i("answers", temp);
 
-        answerText.setText("");
+        /*answerText.setText("");
         if(!answers.isEmpty()){
             a = answers.poll();
             question = questions[a.sentenceNum];
@@ -147,13 +151,56 @@ public class DTestActivity3 extends AppCompatActivity {
             totalNum++;
         }
         nextB.setEnabled(false);
-        checkB.setEnabled(true);
+        checkB.setEnabled(true);*/
+        answerText.setText("");
+        questionText.setText(Html.fromHtml("<font color = \"#03A9F4\">" + title + "</font>"));
+        questionText.append("의 회상 테스트를 시작합니다.\n문장의 빈칸에 들어갈 단어를 회상하여 입력하고 확인 버튼을 눌러주세요.");
+        nextB.setEnabled(true);
+        checkB.setVisibility(View.INVISIBLE);
+        answerText.setVisibility(View.INVISIBLE);
     }
 
     public void nextTest(View view){
         answerText.setText("");
         resultText.setText("");
-        if(!answers.isEmpty()){
+        if(index < sentences.length){
+            if(!answers.isEmpty() && (answers.peek().sentenceNum == index)){
+                a = answers.poll();
+                question = questions[a.sentenceNum];
+                int length = question.length();
+                questionText.setText(
+                        Html.fromHtml(question.substring(0, a.beginIndex) + "<font color = \"#03A9F4\">" +
+                                question.substring(a.beginIndex, a.endIndex) + "</font>" +
+                                question.substring(a.endIndex, length)));
+                answer = a.answer;
+                totalNum++;
+                numText.setText("[문제" + totalNum + "]");
+                nextB.setEnabled(false);
+                checkB.setVisibility(View.VISIBLE);
+                answerText.setVisibility(View.VISIBLE);
+                checkB.setEnabled(true);
+                answerText.setEnabled(true);
+                if(answers.isEmpty())   index++;
+                else if(answers.peek().sentenceNum != index) index++;
+            }
+            else{
+                numText.setText("");
+                questionText.setText(sentences[index]);
+                nextB.setEnabled(true);
+                checkB.setVisibility(View.INVISIBLE);
+                answerText.setVisibility(View.INVISIBLE);
+                index++;
+            }
+        }
+        else{
+            questionText.setText("테스트가 종료되었습니다.");
+            Intent intent = new Intent(getApplicationContext(), DTestActivity4.class);
+            intent.putExtra("total", totalNum);
+            intent.putExtra("correct", correctNum);
+            finish();
+            startActivity(intent);
+        }
+        /*if(!answers.isEmpty()){
             a = answers.poll();
             question = questions[a.sentenceNum];
             int length = question.length();
@@ -174,7 +221,7 @@ public class DTestActivity3 extends AppCompatActivity {
             startActivity(intent);
         }
         nextB.setEnabled(false);
-        checkB.setEnabled(true);
+        checkB.setEnabled(true);*/
     }
 
     public void checkAnswer(View view){
@@ -196,6 +243,7 @@ public class DTestActivity3 extends AppCompatActivity {
 
         for(int i = 0; i < answers.size(); i++){
             if((answers.get(i).answer).equals(answer)){
+                Log.i("test", answers.get(i).answer + " " + answer  + " " + i);
                 a = answers.get(i);
                 builder = new StringBuilder(questions[a.sentenceNum]);
                 for(int k = a.beginIndex; k < a.endIndex; k++){
@@ -204,6 +252,7 @@ public class DTestActivity3 extends AppCompatActivity {
                 }
                 questions[a.sentenceNum] = builder.toString();
                 answers.remove(i);
+                i--;
             }
         }
         nextB.setEnabled(true);

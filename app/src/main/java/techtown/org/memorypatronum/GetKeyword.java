@@ -43,8 +43,18 @@ public class GetKeyword {
                 table[i][j] = 0;
             }
         }
+        /*table = new float[m][m];
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < m; j++){
+                table[i][j] = 0;
+            }
+        }*/
 
         Log.i("nm", n + " " + m);
+    }
+
+    void coocurrence(){
+
     }
 
     void calculateTF() {
@@ -60,12 +70,12 @@ public class GetKeyword {
         }
 
         INDArray wordMatrix = Nd4j.create(table); // matrix로 변경
-        INDArray norm = wordMatrix.norm1(1);
+        /*INDArray norm = wordMatrix.norm1(1);
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(norm.getFloat(i) != 0)   table[i][j] = table[i][j] / norm.getFloat(i);
             }
-        }
+        }*/
     }
 
     void caculateIDF() {
@@ -141,20 +151,20 @@ public class GetKeyword {
         for(int i = 0; i < matrix_size; i++){
             float sum = 0;
             finalMatrix.putScalar(matrix_size*i + i, 0);
-            INDArray targetRow = finalMatrix.getRow(i);
+            INDArray targetColumn = finalMatrix.getColumn(i);
             for(int k = 0; k < matrix_size; k++){
-                sum += targetRow.getFloat(k);
+                sum += targetColumn.getFloat(k);
             }
             if(sum != 0){
                 for(int k = 0; k < matrix_size; k++){
-                    float temp = targetRow.getFloat(k);
+                    float temp = targetColumn.getFloat(k);
                     float num = (temp / sum) * (-d);
                     finalMatrix.putScalar(matrix_size*k + i, num);
                 }
             }
             else{
                 for(int k = 0; k < matrix_size; k++){
-                    float temp = targetRow.getFloat(k);
+                    float temp = targetColumn.getFloat(k);
                     float num = temp * (-d);
                     finalMatrix.putScalar(matrix_size*k + i, num);
                 }
@@ -188,7 +198,7 @@ public class GetKeyword {
         for(int i = 0; i < m; i++){ //소수점 2자리까지
             for(int j = 0;j < m; j++){
                 float num = finalMatrix.getFloat(i*m + j);
-                finalMatrix.putScalar(i*m+j, Math.round(num*100));
+                finalMatrix.putScalar(i*m+j, Math.round(num*100)/100.0);
             }
         }
         temp = "";
@@ -197,15 +207,19 @@ public class GetKeyword {
             {
                 temp = temp + finalMatrix.getFloat(i*m + j) + " ";
             }
+            temp = temp + " / ";
         }
         Log.i("inverseMatrix", temp);
 
-        INDArray resultMatrix = finalMatrix.mmul(tempMatrix);
+        //INDArray resultMatrix = finalMatrix.mmul(tempMatrix);
+        for(int i = 0; i < 10; i++){
+            tempMatrix = finalMatrix.mmul(tempMatrix);
+        }
 
         HashMap<String, Float> resultHash = new HashMap<>();
         for(String key : words.keySet()){
             int index = words.get(key);
-            float num = resultMatrix.getFloat(index, 0);
+            float num = tempMatrix.getFloat(index, 0);
             resultHash.put(key, num);
         }
         finalMatrix = null;

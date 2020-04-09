@@ -2,8 +2,10 @@ package techtown.org.memorypatronum;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -30,12 +32,13 @@ import techtown.org.memorypatronum.R;
 public class LoginActivity extends AppCompatActivity {
     private static String IP_ADDRESS;
     private static String TAG = "phptest";
+    String id;
+    String password;
 
 
     private EditText mEditTextID;
     private EditText mEditTextPassword;
     private TextView mTextViewResult;
-
 
     @Override
     @SuppressWarnings("unused")
@@ -66,13 +69,8 @@ public class LoginActivity extends AppCompatActivity {
                 InsertData task = new InsertData();
                 task.execute("http://" + IP_ADDRESS + "/new.php", id, password);
 
-
                 mEditTextID.setText("");
                 mEditTextPassword.setText("");
-                /*Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                LoginActivity.this.finish();
-                startActivity(intent);*/
-
             }
         });
 
@@ -105,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             if(login[0].equals("로그인 성공")){
                 Toast.makeText(getApplicationContext(), login[1], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                SharedPreference.setAccount(LoginActivity.this, id);
                 LoginActivity.this.finish();
                 startActivity(intent);
             }
@@ -120,8 +119,8 @@ public class LoginActivity extends AppCompatActivity {
         @SuppressWarnings("unused")
         protected String doInBackground(String... params) {
 
-            String id = (String)params[1];
-            String password = (String)params[2];
+            id = (String)params[1];
+            password = (String)params[2];
 
             String serverURL = (String)params[0];
             String postParameters = "&id=" + id + "&password=" + password;

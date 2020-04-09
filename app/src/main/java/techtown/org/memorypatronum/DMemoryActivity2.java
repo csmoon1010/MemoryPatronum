@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -63,9 +66,10 @@ public class DMemoryActivity2 extends AppCompatActivity {
         MyApplication myApp = (MyApplication)getApplication();
         IP_ADDRESS = myApp.getipAddress();
 
-        titleText = (EditText)findViewById(R.id.memoryTitle);
+        titleText = (EditText) findViewById(R.id.memoryTitle);
         dateText = (TextView)findViewById(R.id.memoryDate);
         contentsText = (TextView)findViewById(R.id.memoryContents);
+        contentsText.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = getIntent();
         dateString = intent.getStringExtra("showDate");

@@ -136,11 +136,15 @@ public class DTestActivity2 extends AppCompatActivity {
         }
         komoran = null;
 
+        GetKeyword2 getKeyword2 = new GetKeyword2(nounmorph, nounpos);
+        int size = getKeyword2.cooccurrence(2);
+        HashMap<String, Float> resultHash;
+        resultHash = getKeyword2.textrank(0.85f, 20);
         //TF-IDF 계산
-        GetKeyword getKeyword = new GetKeyword(nounmorph, nounpos);
+        /*GetKeyword getKeyword = new GetKeyword(nounmorph, nounpos);
         int size = getKeyword.calcualteTFIDF();
         HashMap<String, Float> resultHash;
-        resultHash = getKeyword.textrank(0.85f);
+        resultHash = getKeyword.textrank(0.85f);*/
         String temp = "";
         for(String key : resultHash.keySet()){
             temp = temp + key + " " + resultHash.get(key) + "/";
@@ -148,9 +152,12 @@ public class DTestActivity2 extends AppCompatActivity {
         Log.i("result", temp);
         List<String> resultString = keywordSort(resultHash);
         ArrayList<String> keyword = new ArrayList<>();
+        int limit = Math.round(resultString.size() * 0.2f); //상위 20%의 키워드
         for(int i = 0; i < resultString.size(); i++){
-            if(i < 5){
+            if(i == 5)  break;
+            else{
                 keyword.add(resultString.get(i));
+                Log.i("keyword", resultString.get(i));
             }
         }
 

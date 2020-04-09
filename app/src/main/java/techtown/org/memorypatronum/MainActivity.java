@@ -15,17 +15,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 //merge check
 public class MainActivity extends AppCompatActivity {
     Toolbar myToolbar;
+    TextView ruleText;
+    String[] rules = {"일주일에 3번 이상 걷기", "생선과 채소 골고루 먹기", "부지런히 읽고 쓰기",
+    "술은 적게 마시기", "담배는 피우지 말기", "머리 다치지 않도록 조심하기",
+    "정기적으로 건강검진 받기", "가족, 친구들과 자주 소통하기", "매년 치매조기검진 받기"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        ruleText = (TextView) findViewById(R.id.ruleText);
+        long seed = System.currentTimeMillis();
+        Random rand = new Random(seed);
+        int randNumber = rand.nextInt(rules.length);
+        ruleText.setText(rules[randNumber]);
+
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
                 break;
             case R.id.account:
-                Toast.makeText(getApplicationContext(), "account clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
