@@ -117,6 +117,7 @@ public class FoodOutput_cal extends AppCompatActivity {
         }
         Log.i("dates3", temp3);
 
+        //real final
         /*EventDecorator decorator = new EventDecorator(R.color.red, dates1);
         resultCalendar.addDecorator(decorator);
 
