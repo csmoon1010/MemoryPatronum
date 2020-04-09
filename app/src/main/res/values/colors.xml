@@ -8,4 +8,7 @@
     <color name="diarySelected">#D5D5D5</color>
     <color name="themeColor">#03A9F4</color>
     <color name="buttonColor">#BDBDBD</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#008000</color>
 </resources>

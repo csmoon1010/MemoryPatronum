@@ -27,6 +27,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.nd4j.linalg.io.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,6 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.sql.Date;
@@ -46,7 +52,10 @@ public class FoodOutput_cal extends AppCompatActivity {
     private static String IP_ADDRESS;
     private static String TAG = "phptest";
 
-    HashSet<CalendarDay> dates;
+    HashSet<CalendarDay> dates1;
+    HashSet<CalendarDay> dates2;
+    HashSet<CalendarDay> dates3;
+
     String[] calendars;
     String[] doWhat;
     String[] didList;
@@ -54,6 +63,11 @@ public class FoodOutput_cal extends AppCompatActivity {
     String calendarDate;
     String dayOfWeek;
     String showDate;
+
+    private UsersAdapter3 mAdapter2;//새로추가
+    private TextView mTextViewResult2;//새로추가
+    private String mJsonString2;//새로추가
+    private ArrayList<PersonalData3> mArrayList2;//새로추가
 
 
 
@@ -75,11 +89,42 @@ public class FoodOutput_cal extends AppCompatActivity {
         IP_ADDRESS = myApp.getipAddress();
 
         resultCalendar = (MaterialCalendarView) findViewById(R.id.resultCalendar);
-        dates = new HashSet<CalendarDay>();
+        dates1 = new HashSet<CalendarDay>();
+        dates2 = new HashSet<CalendarDay>();
+        dates3 = new HashSet<CalendarDay>();
 
         String id = myApp.getLoginID();
         getCalendar task = new getCalendar();
-        task.execute("http://" + IP_ADDRESS + "/getCalendar2.php", id);
+        task.execute("http://" + IP_ADDRESS + "/getCalendar2.php", id);//아이디 입력하면 입력된 날짜 가져옴
+
+        String temp1 = "";
+        for(CalendarDay date : dates1){
+            temp1 = temp1 + date + " ";
+        }
+        Log.i("dates1", temp1);
+
+
+        String temp2 = "";
+        for(CalendarDay date : dates2){
+            temp2 = temp2 + date + " ";
+        }
+        Log.i("dates2", temp2);
+
+
+        String temp3 = "";
+        for(CalendarDay date : dates3){
+            temp3 = temp3 + date + " ";
+        }
+        Log.i("dates3", temp3);
+
+        /*EventDecorator decorator = new EventDecorator(R.color.red, dates1);
+        resultCalendar.addDecorator(decorator);
+
+        EventDecorator decorator2 = new EventDecorator(R.color.yellow, dates2);
+        resultCalendar.addDecorator(decorator2);
+
+        EventDecorator decorator3 = new EventDecorator(R.color.green, dates3);
+        resultCalendar.addDecorator(decorator3);*/
 
 
         resultCalendar.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -151,8 +196,12 @@ public class FoodOutput_cal extends AppCompatActivity {
 
 
 
-    private HashSet<CalendarDay> getData(){
+    private HashSet<CalendarDay> getData (){
         HashSet<CalendarDay> dates = new HashSet<CalendarDay>();
+
+        MyApplication myApp = (MyApplication)getApplication();
+        IP_ADDRESS = myApp.getipAddress();
+        String id = myApp.getLoginID();
 
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         for(int i = 0; i < calendars.length; i++){
@@ -160,12 +209,34 @@ public class FoodOutput_cal extends AppCompatActivity {
                 java.util.Date date = fm.parse(calendars[i]);
                 CalendarDay day = CalendarDay.from(date);
                 dates.add(day);
+
             }catch(ParseException e){
                 e.printStackTrace();
             }
         }
         return dates;
     }
+
+    private CalendarDay parsingDate (String c){
+
+        SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
+        CalendarDay day = null;
+
+        try{
+            java.util.Date date = fm.parse(c);
+            day = CalendarDay.from(date);
+            //dates.add(day);
+
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        return day;
+    }
+
+
+
+
 
     class getCalendar extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -186,10 +257,24 @@ public class FoodOutput_cal extends AppCompatActivity {
             progressDialog.dismiss();
             Log.d(TAG, "POST response  - " + result);
 
+            MyApplication myApp = (MyApplication)getApplication();
+            IP_ADDRESS = myApp.getipAddress();
+            String id = myApp.getLoginID();
+
             calendars = result.split("\\s");
-            dates = getData();
+
+            for(int i=0; i<calendars.length; i++){
+                GetData task3 = new GetData();
+                task3.execute("http://" + IP_ADDRESS + "/fac.php", id, calendars[i]);
+            }
+
+
+
+
+
+            /*dates = getData();
             EventDecorator decorator = new EventDecorator(R.color.themeColor, dates);
-            resultCalendar.addDecorator(decorator);
+            resultCalendar.addDecorator(decorator);*/
 
         }
 
@@ -357,4 +442,186 @@ public class FoodOutput_cal extends AppCompatActivity {
 
         }
     }
+
+
+    private class GetData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String errorString = null;
+        String calendarText;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(FoodOutput_cal.this, "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult2.setText(result);
+            Log.d(TAG, "GetData" +result);
+
+            int count = StringUtils.countOccurrencesOf(result, "O");
+            Log.i("count", count+"");
+
+            CalendarDay day = parsingDate(calendarText);
+            Log.i("calendarText", calendarText);
+            Log.i("day", day+"");
+            HashSet<CalendarDay> dates = new HashSet<>();
+            dates.add(day);
+
+            EventDecorator decorator;
+            if(count==0 || count==1 || count==2){
+                decorator = new EventDecorator(Color.RED, dates);
+                resultCalendar.addDecorator(decorator);
+            }
+            else if(count==3 || count==4 || count==5){
+                decorator = new EventDecorator(Color.rgb(255, 204, 0), dates);
+                resultCalendar.addDecorator(decorator);
+            }
+            else{
+                decorator = new EventDecorator(Color.GREEN, dates);
+                resultCalendar.addDecorator(decorator);
+            }
+
+
+
+            /*if(result == null){
+                mTextViewResult2.setText(errorString);
+            }else{
+                mJsonString2 = result;
+                showResult2();
+            }*/
+
+            //dates = getData();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params){
+            String severURL = (String)params[0];
+            String id = (String)params[1];
+            calendarText = (String)params[2];
+
+            String postParameters = "&id=" + id + "&calendarText=" + calendarText;
+
+
+            try {
+                URL url = new URL(severURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+                //String linenew;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+
+
+                }
+
+
+
+                bufferedReader.close();
+                return sb.toString().trim();
+            } catch (Exception e){
+                Log.d(TAG, "InsertData:Error", e);
+                errorString = e.toString();
+                return  null;
+            }
+        }
+    }
+
+
+
+    private void showResult2(){
+
+        String TAG_JSON2="webnautes";
+        String TAG_MIND="webnautes";
+
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString2);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON2);
+
+            for(int i=0; i<jsonArray.length(); i++){
+
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String mind = item.getString(TAG_MIND);
+                //
+                //
+
+                PersonalData3 personalData3 = new PersonalData3();
+
+                personalData3.setMember_mind(mind);
+
+                //HashMap<String,String>hashMap = new HashMap<>();
+
+                //hashMap.put(TAG_MIND, mind);
+                //
+                //
+
+                //mArrayList2.add(hashMap);
+                mArrayList2.add(personalData3);
+                mAdapter2.notifyDataSetChanged();
+            }
+
+            /*ListAdapter adapternew = new SimpleAdapter(
+                    FoodResult_MIND.this, mArrayList2, R.layout.item_list3,
+                    new String[]{TAG_MIND},
+                    new int[]{R.id.textView_listMIND}
+            );
+
+            mlistView2.setAdapter(adapternew);*/
+        }catch (JSONException e){
+
+            Log.d(TAG, "showResult2 :", e);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
