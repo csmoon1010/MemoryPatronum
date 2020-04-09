@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class GetKeyword2 {
+public class GetKeyword2 {//glgl
     ArrayList<String> morph = new ArrayList<>();
     //ArrayList<String> pos = new ArrayList<>();
     ArrayList<String> nounmorph = new ArrayList<>(); //추출한 morph
